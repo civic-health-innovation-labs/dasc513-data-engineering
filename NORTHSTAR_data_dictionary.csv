@@ -1,0 +1,64 @@
+variable_name,form_name,field_type,field_label,choices_or_units,notes
+record_id,enrolment,text,Study record ID,,
+site_code,enrolment,text,Recruiting site code,NST01 | NST02 | NST03,"Free text in the CRF, not a dropdown"
+site_name,enrolment,text,Recruiting site name,,
+patient_forename,enrolment,text,Forename,,Identifier
+patient_surname,enrolment,text,Surname,,Identifier
+nhs_number,enrolment,text,NHS number,10 digits,Identifier. Modulus 11 check digit expected
+hospital_number,enrolment,text,Local hospital number,,"Identifier, site-specific format"
+dob,enrolment,date,Date of birth,,Identifier
+sex,enrolment,radio,Sex,"M, Male | F, Female",Sex at birth as recorded on PAS
+ethnic_category,enrolment,radio,Ethnic category,"NHS Data Dictionary codes A-S, Z, 99",
+postcode,enrolment,text,Home postcode,,Identifier. Full unit postcode collected
+gp_practice_code,enrolment,text,GP practice code,,
+consent_date,enrolment,date,Date of consent,,
+consent_type,enrolment,radio,Consent route,"1, Written informed | 2, Consultee | 3, Emergency waiver | 4, Retrospective",
+adm_date,admission,date,Date of hospital admission,,Primary index date
+adm_time,admission,text,Time of admission,HH:MM,
+symptom_onset_date,admission,date,Date of symptom onset,,"Patient reported, often estimated"
+adm_source,admission,radio,Admitted from,"1, Home | 2, Care home | 3, Transfer | 4, ED self-presentation",
+adm_weight_kg,admission,text,Weight at admission,kg,
+adm_height_cm,admission,text,Height,cm,
+smoking_status,admission,radio,Smoking status,"1, Never | 2, Ex | 3, Current | 9, Unknown",
+temp_adm,admission,text,Temperature at admission,degrees C,Plausible range 34.0-42.0
+hr_adm,admission,text,Heart rate at admission,bpm,Plausible range 30-200
+rr_adm,admission,text,Respiratory rate at admission,breaths/min,Plausible range 6-60
+sbp_adm,admission,text,Systolic BP at admission,mmHg,Plausible range 50-250
+spo2_adm,admission,text,Oxygen saturation at admission,%,Plausible range 50-100
+o2_adm,admission,radio,Oxygen support at admission,"0, Room air | 1, Nasal cannula | 2, Simple mask | 3, Non-rebreathe | 4, HFNC | 5, NIV | 6, IMV",
+gcs_adm,admission,text,GCS at admission,3-15,
+news2_adm,admission,text,NEWS2 at admission,0-17,
+crp_adm,admission,text,CRP at admission,mg/L,
+wcc_adm,admission,text,White cell count at admission,x10^9/L,
+lymph_adm,admission,text,Lymphocyte count at admission,x10^9/L,
+creat_adm,admission,text,Creatinine at admission,umol/L,
+urea_adm,admission,text,Urea at admission,mmol/L,
+ddimer_adm,admission,text,D-dimer at admission,ng/mL FEU,Not routinely available at all sites
+ferritin_adm,admission,text,Ferritin at admission,ug/L,Not routinely available at all sites
+swab_result,admission,radio,NRV-24 PCR result,"1, Positive | 2, Negative | 3, Not done | 4, Indeterminate",
+com_cardiac,comorbidities,radio,Chronic cardiac disease,"0, No | 1, Yes | 9, Unknown",
+com_pulmonary,comorbidities,radio,Chronic pulmonary disease (non-asthma),"0, No | 1, Yes | 9, Unknown",
+com_asthma,comorbidities,radio,Asthma,"0, No | 1, Yes | 9, Unknown",
+com_diabetes,comorbidities,radio,Diabetes,"0, No | 1, Yes | 9, Unknown",
+com_ckd,comorbidities,radio,Chronic kidney disease,"0, No | 1, Yes | 9, Unknown",
+com_malignancy,comorbidities,radio,Malignancy,"0, No | 1, Yes | 9, Unknown",
+com_obesity,comorbidities,radio,Clinician-reported obesity,"0, No | 1, Yes | 9, Unknown",
+com_other_txt,comorbidities,notes,"Other comorbidity, free text",,
+meds_on_admission_txt,treatment,notes,"Medication on admission, free text",,Transcribed from drug chart
+tx_steroid,treatment,yesno,Systemic corticosteroid given,,Coding inconsistent across sites
+steroid_drug,treatment,text,Corticosteroid drug and dose,,
+steroid_start_date,treatment,date,Date corticosteroid started,,
+tx_antiviral,treatment,yesno,Antiviral given,,
+antiviral_drug,treatment,text,Antiviral drug,,
+tx_antibiotic,treatment,yesno,Antibiotic given,,
+antibiotic_txt,treatment,text,"Antibiotic, free text",,
+icu_admit,outcome,yesno,Admitted to critical care,,
+icu_admit_date,outcome,date,Date of critical care admission,,
+icu_los_days,outcome,text,Critical care length of stay,days,
+imv,outcome,yesno,Invasive mechanical ventilation,,
+imv_days,outcome,text,Days of invasive ventilation,days,
+outcome,outcome,radio,Outcome at hospital discharge,"1, Discharged alive | 2, Died | 3, Transferred | 4, Still inpatient",Primary endpoint
+outcome_date,outcome,date,Date of outcome,,
+hosp_los_days,outcome,text,Hospital length of stay,days,
+discharge_dest,outcome,radio,Discharge destination,"1, Home | 2, Care home | 3, Rehabilitation | 4, Other hospital | 5, Not applicable",
+complications_txt,outcome,notes,"Complications, free text",,
