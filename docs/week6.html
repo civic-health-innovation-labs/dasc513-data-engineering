@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 6 Safe Handling</title>
+<meta name="description" content="DASC513 week 6 practical: where the data goes, what could go wrong, de-identifying NORTHSTAR, k-anonymity, and free text.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d5c63'/%3E%3Cpath d='M16 5l2.6 7.9H27l-6.8 4.9 2.6 8L16 21l-6.8 4.8 2.6-8L5 12.9h8.4z' fill='%23fff'/%3E%3C/svg%3E">
+</head>
+<body data-week="6">
+<div class="layout">
+<aside class="toc"></aside>
+<main id="main">
+
+<div class="hero">
+  <div class="kicker">Week 6 · Safe handling · Practical</div>
+  <h1>Can the data be shared?</h1>
+  <p class="lede">Today you follow the data from the hospital to the research environment and find where it could go wrong.
+  Then you try to make NORTHSTAR safe to share, and find out what that costs.</p>
+</div>
+
+<div class="scenario">
+  <p><strong>The scenario, extended</strong></p>
+  <p>The colleague still wants a model predicting <strong>death in hospital</strong>. The study now also wants to know about
+  <strong>deaths and readmissions after discharge</strong>, which the case report form does not record. Those come from national data
+  (Hospital Episode Statistics and death registrations), linked by <strong>NHS England</strong> acting as a third party.</p>
+  <p>And the colleague has asked for a copy of the dataset on their laptop.</p>
+</div>
+
+<details open>
+  <summary>Plan for the session (2 hours, timings indicative)</summary>
+  <table class="plan">
+    <tr><td>0:00</td><td>Brief: the linkage extension, the diagram symbols and STRIDE</td></tr>
+    <tr><td>0:10</td><td>Task 1, in groups: add the linkage to the data flow diagram</td></tr>
+    <tr><td>0:30</td><td>Task 2, same groups: what could go wrong, and where</td></tr>
+    <tr><td>0:50</td><td>Break</td></tr>
+    <tr><td>1:00</td><td>Parts 1 and 2, in pairs: what identifies a patient, and the treatment</td></tr>
+    <tr><td>1:25</td><td>Parts 3 and 4: is it anonymous now? and the free text</td></tr>
+    <tr><td>1:45</td><td>Part 5, debrief: your verdict</td></tr>
+    <tr><td>1:55</td><td>Download your work</td></tr>
+  </table>
+  <p class="hint">Timings are a guide, not a clock: spend longer where the discussion is useful. Boxes marked <strong>Going further</strong> are optional. Open them if you finish early; nothing in them is needed later.
+  You do not need to write any code: read each code box, say in English what it does, then press Run.</p>
+</details>
+
+<!-- ================================================================ -->
+<section class="part" id="t1">
+<h2 data-short="Task 1 · Where does the data go?"><span class="part-no">Task 1</span> · Where does the data go?</h2>
+<p class="timing">In groups · about 20 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">A data flow diagram answers one question: where does the data go?</h3>
+  <p>It uses four symbols and one extra idea.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Symbol</th><th>Called</th><th>Means</th></tr>
+    <tr><td>Rectangle</td><td><strong>External entity</strong></td><td>A person or organisation outside your control. You can only decide what you accept from it.</td></tr>
+    <tr><td>Circle</td><td><strong>Process</strong></td><td>Something that does something to the data: checks it, joins it, changes it.</td></tr>
+    <tr><td>Two parallel lines</td><td><strong>Data store</strong></td><td>Where data sits still: a database, a file share, a spreadsheet on a laptop.</td></tr>
+    <tr><td>Arrow</td><td><strong>Data flow</strong></td><td>Data moving, labelled with <em>what</em> moves.</td></tr>
+    <tr><td>Dashed line</td><td><strong>Trust boundary</strong></td><td>Where control changes hands from one organisation or system to another. <strong>Risk concentrates here.</strong></td></tr>
+  </table></div>
+  <p>Below is the diagram from the lecture. It already shows NHS England sending Hospital Episode Statistics <em>in</em>.
+  What it does not show is how NHS England knows which patients to send data about. That is the gap your group fills.</p>
+  <figure class="diagram">
+    <a href="assets/img/NORTHSTAR_dfd_simple.svg" target="_blank" rel="noopener"><img src="assets/img/NORTHSTAR_dfd_simple.svg"
+      alt="NORTHSTAR simplified data flow diagram. Three trust boundaries on the left (study site, biobank, NHS England) feed five processes inside the Trusted Research Environment: data ingress, data linkage, data provisioning, research, and egress output check, ending in publication. Nine STRIDE hotspots are marked H1 to H9."></a>
+    <figcaption>Open the diagram full size in a new tab.</figcaption>
+  </figure>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Task 1</span>
+  <h3>Add the linkage to the diagram</h3>
+  <p>On your group's Miro board (or on paper, or in this table), add what has to happen for NHS England to send back data about <em>these</em> patients.
+  For each thing you add, name <strong>the human step</strong>: the point where a person does something by hand, such as typing, emailing, or approving.</p>
+  <details>
+    <summary>Hint, if your group is stuck</summary>
+    <p>NHS England cannot send back data about NORTHSTAR participants unless it knows who they are. Ask: what has to travel <em>to</em>
+    NHS England first (think NHS numbers), who sends it, how, and what comes back?</p>
+  </details>
+  <div class="tablewrap"><table class="rows" data-rows="dfd.additions" data-caption="Additions to the data flow diagram" data-min="2">
+    <thead><tr><th>What you added (a process, store, entity or flow)</th><th>What actually moves</th><th>Which trust boundary it crosses</th><th>The human step</th></tr></thead><tbody></tbody>
+  </table></div>
+  <div class="field"><label for="w6-dfd1">Which trust boundary in your diagram carries the most risk, and why? One or two sentences.</label>
+    <textarea id="w6-dfd1" class="short" data-save="dfd.worst"></textarea></div>
+  <div class="field"><label for="w6-dfd2">Link to your group's Miro board, or where the diagram is saved (optional)</label>
+    <input type="text" id="w6-dfd2" data-save="dfd.link" data-optional="1"></div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="t2">
+<h2 data-short="Task 2 · What could go wrong?"><span class="part-no">Task 2</span> · What could go wrong, and where?</h2>
+<p class="timing">Same groups · about 20 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">STRIDE is a checklist of six ways things go wrong</h3>
+  <p>Stand at each trust boundary on your diagram and ask the six questions. You do not need all six at every boundary; you need the ones that could really happen.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Letter</th><th>Threat</th><th>The question to ask</th><th>In a research pipeline, for example</th></tr>
+    <tr><td><strong>S</strong></td><td>Spoofing</td><td>Could someone pretend to be someone they are not?</td><td>An extract request from a look-alike email address</td></tr>
+    <tr><td><strong>T</strong></td><td>Tampering</td><td>Could the data be changed, by accident or on purpose?</td><td>A study ID typed in by hand with two digits swapped</td></tr>
+    <tr><td><strong>R</strong></td><td>Repudiation</td><td>Could someone deny doing something, with no record to prove it?</td><td>Nobody can show which version of the linkage produced the results</td></tr>
+    <tr><td><strong>I</strong></td><td>Information disclosure</td><td>Could the data reach someone who should not see it?</td><td>A spreadsheet of NHS numbers emailed to the wrong person</td></tr>
+    <tr><td><strong>D</strong></td><td>Denial of service</td><td>Could the work be stopped?</td><td>A corrupt file that stalls the ingest for a week</td></tr>
+    <tr><td><strong>E</strong></td><td>Elevation of privilege</td><td>Could someone get more access than they were given?</td><td>A project gets more fields than the committee approved</td></tr>
+  </table></div>
+  <p>Most real incidents are mundane: an email, a laptop, a shared password. Do not put every threat under I.
+  <strong>Residual risk</strong> means the risk that is left once the existing control is in place.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Task 2</span>
+  <h3>Three threats, written down</h3>
+  <p>One row per threat. Concentrate on the boundaries your linkage step crosses. At least one row must describe a threat with <strong>no technology in it at all</strong>.</p>
+  <details>
+    <summary>Example row, completed</summary>
+    <table><tr><th>Element</th><td>Sample register, typed by hand</td></tr>
+      <tr><th>Threat</th><td>Study ID entered with transposed digits</td></tr>
+      <tr><th>STRIDE</th><td>T (and R: nobody records who typed it)</td></tr>
+      <tr><th>Looks like</th><td>A sample result is attached to the wrong patient, and the analysis silently uses it</td></tr>
+      <tr><th>Existing control</th><td>None</td></tr><tr><th>Residual</th><td>High</td></tr>
+      <tr><th>Mitigation</th><td>Print barcode labels from REDCap; scan, never type</td></tr></table>
+  </details>
+  <div class="tablewrap"><table class="rows" data-rows="stride" data-caption="STRIDE risk table" data-min="3">
+    <thead><tr><th>Element or flow</th><th>Threat (what could happen)</th><th>STRIDE letter(s)</th><th>Existing control</th><th data-options="Low|Medium|High">Residual</th><th>What you would do about it</th></tr></thead><tbody></tbody>
+  </table></div>
+  <div class="field"><label for="w6-st1">Which of your rows is the one most likely to actually happen, and why is it usually a human one?</label>
+    <textarea id="w6-st1" class="short" data-save="stride.human"></textarea></div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="p1">
+<h2 data-short="1 · What could identify a patient?"><span class="part-no">Part 1</span> · What in here could identify a patient?</h2>
+<p class="timing">After the break · in pairs · about 7 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">Three kinds of identifying field</h3>
+  <ul>
+    <li><strong>Direct identifier</strong>: identifies a person on its own. A name, an NHS number.</li>
+    <li><strong>Indirect identifier</strong>: does not identify anyone alone, but combined with others narrows down to one person.
+      Date of birth, postcode, sex, admission date, a rare diagnosis.</li>
+    <li><strong>Free text</strong>: anything could be typed in it, including names and phone numbers. Treat it as its own problem.</li>
+  </ul>
+  <p>Everything else is a clinical value that carries no meaningful identifying information on its own (a temperature, a blood result).
+  The middle group is where re-identification actually happens, and it is the one people underestimate.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Your turn 1</span>
+  <h3>Sort fourteen columns</h3>
+  <p>Choose a group for each column. Three are done for you. Argue about the borderline ones with the person next to you: the argument is the point.</p>
+  <div class="kpi" id="w6-cls-kpi"></div>
+  <div class="classify" id="w6-classify" data-caption="Column classification"></div>
+  <div class="field"><label for="w6-yt1">Which column was hardest to place, and what did you decide?</label>
+    <textarea id="w6-yt1" class="short" data-save="yt1.hardest"></textarea></div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="p2">
+<h2 data-short="2 · Applying the treatment"><span class="part-no">Part 2</span> · Applying the treatment</h2>
+<p class="timing">In pairs · about 18 minutes</p>
+
+<div class="cell read">
+  <span class="tag">Read</span>
+  <p>Now build a de-identified <strong>copy</strong>. You never overwrite the source: if you get it wrong you want to be able to go back.
+  Each kind of field gets a different treatment, and every treatment costs something.</p>
+  <p>Two rough edges in this dataset get in the way today, and you will take them apart properly in week 7. The three hospitals write dates three different ways
+  (<code>16/12/2024</code>, <code>2024-12-16</code>, <code>16-Dec-24</code>), so the first code box reads each site's dates using that site's format.
+  And records 47 and 88 are the same person entered twice; today that is useful.</p>
+</div>
+
+<div class="cell run" data-run="w6.load">
+  <span class="tag">Run</span>
+  <p>Load the data, then read the admission dates site by site.</p>
+  <div class="codebox" data-say="Load the export as text. For each site, read that site's dates with that site's format, and keep the result as a new column.">
+<script type="text/plain" data-lang="r">
+repo <- "https://raw.githubusercontent.com/civic-health-innovation-labs/dasc513-data-engineering/main/"
+df <- read.csv(paste0(repo, "NORTHSTAR_redcap_export.csv"),
+               colClasses = "character", na.strings = character(0))
+
+# Each site writes dates its own way.
+SITE_FORMATS <- c(mersey_general = "%d/%m/%Y",
+                  calderbrook    = "%Y-%m-%d",
+                  wirral_park    = "%d-%b-%y")
+
+parse_dates <- function(frame, column) {
+  out <- as.Date(rep(NA, nrow(frame)))
+  for (site in names(SITE_FORMATS)) {
+    rows <- frame$redcap_data_access_group == site
+    out[rows] <- as.Date(frame[[column]][rows], format = SITE_FORMATS[[site]])
+  }
+  out
+}
+
+df$adm_date_parsed <- parse_dates(df, "adm_date")
+cat("admission dates parsed:", sum(!is.na(df$adm_date_parsed)), "of", nrow(df), "\n")
+</script>
+<script type="text/plain" data-lang="py">
+import pandas as pd
+repo = "https://raw.githubusercontent.com/civic-health-innovation-labs/dasc513-data-engineering/main/"
+df = pd.read_csv(repo + "NORTHSTAR_redcap_export.csv", dtype=str, keep_default_na=False)
+
+# Each site writes dates its own way.
+SITE_FORMATS = {
+    "mersey_general": "%d/%m/%Y",
+    "calderbrook":    "%Y-%m-%d",
+    "wirral_park":    "%d-%b-%y",
+}
+
+def parse_dates(frame, column):
+    out = pd.Series(pd.NaT, index=frame.index)
+    for site, fmt in SITE_FORMATS.items():
+        rows = frame["redcap_data_access_group"] == site
+        out[rows] = pd.to_datetime(frame.loc[rows, column], format=fmt, errors="coerce")
+    return out
+
+df["adm_date_parsed"] = parse_dates(df, "adm_date")
+print("admission dates parsed:", df["adm_date_parsed"].notna().sum(), "of", len(df))
+</script>
+  </div>
+</div>
+
+<div class="cell run" data-run="w6.drop">
+  <span class="tag">Run</span>
+  <p>Start from a copy and remove the direct identifiers outright.</p>
+  <div class="codebox" data-say="Make a copy of df called safe, without the five identifier columns, and count what is left.">
+<script type="text/plain" data-lang="r">
+to_drop <- c("patient_forename", "patient_surname", "nhs_number",
+             "hospital_number", "gp_practice_code")
+safe <- df[, !(names(df) %in% to_drop)]    # keep every column NOT in to_drop
+cat("columns remaining:", ncol(safe), "\n")
+</script>
+<script type="text/plain" data-lang="py">
+to_drop = ["patient_forename", "patient_surname", "nhs_number",
+           "hospital_number", "gp_practice_code"]
+safe = df.drop(columns=to_drop)            # drop() returns a new copy
+print("columns remaining:", safe.shape[1])
+</script>
+  </div>
+</div>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">A pseudonym: a consistent, meaningless replacement</h3>
+  <p>Dropping the NHS number means you can no longer tell which rows belong to the same person, and you cannot link to NHS England's data later.
+  The standard answer is a <strong>pseudonym</strong>: a made-up ID that is always the same for the same person, but means nothing on its own.</p>
+  <p>It is made with a <strong>hash</strong>: a function that turns any text into a fixed-length scramble, always the same scramble for the same text, and impossible to run backwards.
+  But there is a catch. An NHS number is ten digits, so there are only ten billion possibilities, and a laptop can hash about ten million values a second. So someone with the hashed IDs could hash
+  <em>every possible NHS number</em> in about twenty minutes, and look each one up. The fix is a <strong>salt</strong>: a long secret phrase stuck on the front before hashing.
+  Without the salt, the lookup table cannot be built. So the salt must be kept secret, and kept somewhere the data is not.</p>
+</div>
+
+<div class="cell run" data-run="w6.pseudo">
+  <span class="tag">Run</span>
+  <div class="codebox" data-say="For each NHS number, stick the salt on the front, hash it, and keep the first ten characters as the study ID.">
+<script type="text/plain" data-lang="r">
+# install.packages("openssl")   # once, if you do not have it
+SALT <- "northstar-teaching-salt-do-not-reuse"
+
+pseudonymise <- function(value, salt = SALT) {
+  value <- trimws(value)
+  hashed <- openssl::sha256(paste0(salt, value))
+  ifelse(value == "", "", paste0("P-", substr(hashed, 1, 10)))
+}
+
+safe$study_id <- pseudonymise(df$nhs_number)
+head(safe[, c("record_id", "study_id")], 5)
+</script>
+<script type="text/plain" data-lang="py">
+import hashlib
+SALT = "northstar-teaching-salt-do-not-reuse"
+
+def pseudonymise(value, salt=SALT):
+    value = value.strip()
+    if value == "":
+        return ""
+    digest = hashlib.sha256((salt + value).encode()).hexdigest()
+    return "P-" + digest[:10]
+
+safe["study_id"] = df["nhs_number"].apply(pseudonymise)
+safe[["record_id", "study_id"]].head(5)
+</script>
+  </div>
+</div>
+
+<div class="cell run" data-run="w6.dup">
+  <span class="tag">Run</span>
+  <p>Records 47 and 88 are the same person. Did they get the same pseudonym?</p>
+  <div class="codebox" data-say="Show the record ID and study ID for records 47 and 88.">
+<script type="text/plain" data-lang="r">
+safe[safe$record_id %in% c("47", "88"), c("record_id", "study_id")]
+</script>
+<script type="text/plain" data-lang="py">
+safe.loc[safe["record_id"].isin(["47", "88"]), ["record_id", "study_id"]]
+</script>
+  </div>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Your turn 2</span>
+  <h3>The pseudonym</h3>
+  <div class="field"><label for="w6-yt2a">Records 47 and 88 got the same <code>study_id</code> even though they are at different sites. Why is that exactly what you want from a pseudonym?</label>
+    <textarea id="w6-yt2a" class="short" data-save="yt2.same"></textarea></div>
+  <div class="field"><label for="w6-yt2c">The salt is in the code above, in plain sight. In a real study, where should it be kept, who should hold it, and what happens if it ends up in the same place as the data?</label>
+    <textarea id="w6-yt2c" class="short" data-save="yt2.salt"></textarea></div>
+</div>
+
+<div class="cell run" data-run="w6.age" data-predict="what should the youngest and oldest ages be, in a study of adults admitted to hospital?">
+  <span class="tag">Run</span>
+  <p>Date of birth is usually replaced by an age band. First we need the age at admission.</p>
+  <div class="codebox" data-say="Read each date of birth with its site's format, take it away from the admission date, turn days into years, and summarise.">
+<script type="text/plain" data-lang="r">
+dob_parsed <- parse_dates(df, "dob")
+age_years  <- as.numeric(df$adm_date_parsed - dob_parsed) / 365.25
+summary(age_years)
+</script>
+<script type="text/plain" data-lang="py">
+dob_parsed = parse_dates(df, "dob")
+age_years  = (df["adm_date_parsed"] - dob_parsed).dt.days / 365.25
+age_years.describe()
+</script>
+  </div>
+</div>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">The minimum age is negative. Here is why.</h3>
+  <p>Wirral Park writes years with two digits: <code>18-Jul-66</code>. A computer has to decide which century that is, and R and Python both use the same fixed rule:
+  <code>00</code> to <code>68</code> become 20xx, <code>69</code> to <code>99</code> become 19xx. So a patient born in 1966 is read as born in 2066, and their age comes out below zero.
+  For dates of birth in a study of adults, the rule is wrong for everyone born before 1969. This is a real and very common bug.</p>
+  <p>The fix below says: a date of birth in the future must be a century too late, so take 100 years off it.</p>
+</div>
+
+<div class="cell run" data-run="w6.fix">
+  <span class="tag">Run</span>
+  <div class="codebox" data-say="For any date of birth after 1 March 2025, take 100 years off. Recalculate the ages and summarise again.">
+<script type="text/plain" data-lang="r">
+fix_century <- function(d, today = as.Date("2025-03-01")) {
+  late <- !is.na(d) & d > today                      # born in the future?
+  d[late] <- as.Date(paste0(as.integer(format(d[late], "%Y")) - 100,
+                            format(d[late], "-%m-%d")))   # same day, 100 years earlier
+  d
+}
+
+dob_parsed <- fix_century(dob_parsed)
+age_years  <- as.numeric(df$adm_date_parsed - dob_parsed) / 365.25
+cat("negative ages now:", sum(age_years < 0, na.rm = TRUE), "\n")
+summary(age_years)
+</script>
+<script type="text/plain" data-lang="py">
+def fix_century(d, today=pd.Timestamp("2025-03-01")):
+    if pd.isna(d):
+        return d
+    return d.replace(year=d.year - 100) if d > today else d
+
+dob_parsed = dob_parsed.apply(fix_century)
+age_years  = (df["adm_date_parsed"] - dob_parsed).dt.days / 365.25
+print("negative ages now:", (age_years < 0).sum())
+age_years.describe()
+</script>
+  </div>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Your turn 2b</span>
+  <h3>Did the fix fix everything?</h3>
+  <p>Record 63 is at Wirral Park, admitted in October 2024. Its date of birth was typed as <code>11-Apr-26</code>. The fix turned that into 1926, making the patient 98.</p>
+  <div class="field"><label for="w6-yt2k">Is 98 the right answer for record 63, or could <code>11-Apr-26</code> be something else (a typo for another year, say)? What should a cleaning rule do with a value it cannot be sure about?</label>
+    <textarea id="w6-yt2k" class="short" data-save="yt2b.r63"></textarea></div>
+  <p class="hint">Keep this for week 7: a fix that makes every value look plausible can hide the errors you most need to see.</p>
+</div>
+
+<div class="cell run" data-run="w6.bands">
+  <span class="tag">Run</span>
+  <p>Now the age bands. The date of birth itself is not kept.</p>
+  <div class="codebox" data-say="Cut each age into a band, add the band to safe, remove the date of birth, and count how many people are in each band.">
+<script type="text/plain" data-lang="r">
+safe$age_band <- cut(age_years,
+                     breaks = c(0, 18, 40, 55, 65, 75, 85, 120),
+                     labels = c("<18", "18-39", "40-54", "55-64", "65-74", "75-84", "85+"))
+safe$dob <- NULL                                       # NULL removes a column
+cat("patients with an age band:", sum(!is.na(safe$age_band)), "of", nrow(safe), "\n")
+table(safe$age_band)
+</script>
+<script type="text/plain" data-lang="py">
+safe["age_band"] = pd.cut(age_years,
+                          bins=[0, 18, 40, 55, 65, 75, 85, 120],
+                          labels=["<18", "18-39", "40-54", "55-64", "65-74", "75-84", "85+"])
+safe = safe.drop(columns=["dob"])
+print("patients with an age band:", safe["age_band"].notna().sum(), "of", len(safe))
+safe["age_band"].value_counts().sort_index()
+</script>
+  </div>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Your turn 2c</span>
+  <h3>Look at the age band counts</h3>
+  <div class="field"><label for="w6-yt2g">The <code>&lt;18</code> band has one patient: a child, in a study of adults. That is two separate problems, one about permission (governance) and one about the data. What are they?</label>
+    <textarea id="w6-yt2g" data-save="yt2c.child"></textarea></div>
+</div>
+
+<div class="cell run" data-run="w6.postcode">
+  <span class="tag">Run</span>
+  <p>Postcodes become <strong>districts</strong>: the first half, <code>L8</code> rather than <code>L8 4QZ</code>.
+  The postcodes in this file are messy (some lowercase, some with no space, some with two), so the code removes spaces first and keeps everything except the last three characters.</p>
+  <div class="codebox" data-say="Take out every space, make it upper case, and keep everything except the last three characters. Then count the twelve most common districts.">
+<script type="text/plain" data-lang="r">
+postcode_district <- function(pc) {
+  clean <- toupper(gsub(" ", "", pc))       # remove spaces, upper case
+  ifelse(clean == "", "", substr(clean, 1, nchar(clean) - 3))   # all but the last 3
+}
+
+safe$postcode_district <- postcode_district(df$postcode)
+safe$postcode <- NULL
+head(sort(table(safe$postcode_district), decreasing = TRUE), 12)
+</script>
+<script type="text/plain" data-lang="py">
+def postcode_district(pc):
+    clean = pc.replace(" ", "").upper()     # remove spaces, upper case
+    return clean[:-3] if clean else ""      # all but the last 3
+
+safe["postcode_district"] = df["postcode"].apply(postcode_district)
+safe = safe.drop(columns=["postcode"])
+safe["postcode_district"].value_counts().head(12)
+</script>
+  </div>
+</div>
+
+<div class="cell run" data-run="w6.days">
+  <span class="tag">Run</span>
+  <p>Dates become <strong>days since admission</strong>, so the clinical timeline survives but the calendar does not.</p>
+  <div class="codebox" data-say="For each event date, count the days from admission to it, store that, and drop the calendar dates.">
+<script type="text/plain" data-lang="r">
+for (column in c("symptom_onset_date", "outcome_date", "icu_admit_date", "steroid_start_date")) {
+  parsed <- parse_dates(df, column)
+  new_name <- paste0("days_to_", sub("_date", "", column))
+  safe[[new_name]] <- as.numeric(parsed - df$adm_date_parsed)
+  safe[[column]] <- NULL
+}
+safe$adm_date <- NULL; safe$adm_time <- NULL; safe$adm_date_parsed <- NULL
+
+head(safe[, c("study_id", "days_to_symptom_onset", "days_to_outcome", "days_to_icu_admit")], 8)
+</script>
+<script type="text/plain" data-lang="py">
+for column in ["symptom_onset_date", "outcome_date", "icu_admit_date", "steroid_start_date"]:
+    parsed = parse_dates(df, column)
+    safe["days_to_" + column.replace("_date", "")] = (parsed - df["adm_date_parsed"]).dt.days
+    safe = safe.drop(columns=[column])
+safe = safe.drop(columns=["adm_date", "adm_time", "adm_date_parsed"])
+
+safe[["study_id", "days_to_symptom_onset", "days_to_outcome", "days_to_icu_admit"]].head(8)
+</script>
+  </div>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Your turn 2d</span>
+  <h3>What did that cost?</h3>
+  <p>Every treatment above removed something. Names and NHS numbers are gone, ages are bands, postcodes are districts, and calendar dates are gone.</p>
+  <div class="field"><label for="w6-yt2j">Name one question the colleague could have answered with real admission dates that they cannot answer now.
+    (Think about winter, about a new variant, about a change in treatment guidance.)</label>
+    <textarea id="w6-yt2j" class="short" data-save="yt2e.cost"></textarea></div>
+</div>
+
+<details class="further">
+  <summary>Going further: a deliberate trap in the postcode code</summary>
+  <div class="cell run" data-run="w6.trap">
+    <span class="tag">Run</span>
+    <p>The obvious way to get a postcode district is "take everything before the space". Try it on four real-looking values and compare it with the function above.</p>
+    <div class="codebox" data-say="For each test value, split at the space and take the first piece; compare that with the function above.">
+<script type="text/plain" data-lang="r">
+test_values <- c("L7 2EZ", "PR80GQ", "ch42 9aa", " CH44  5TU ")
+data.frame(value  = test_values,
+           naive  = sapply(strsplit(test_values, " "), `[`, 1),   # first piece before a space
+           better = postcode_district(test_values))
+</script>
+<script type="text/plain" data-lang="py">
+test_values = ["L7 2EZ", "PR80GQ", "ch42 9aa", " CH44  5TU "]
+for v in test_values:
+    naive = v.split(" ")[0]                  # first piece before a space
+    print(f"{v!r:16} naive: {naive!r:10} better: {postcode_district(v)!r}")
+</script>
+    </div>
+  </div>
+  <div class="cell turn">
+    <span class="tag">Optional</span>
+    <div class="field"><label for="w6-yt2i">What does this tell you about writing cleaning code against data you have not looked at properly?</label>
+      <textarea id="w6-yt2i" class="short" data-save="yt2d.trap" data-optional="1"></textarea></div>
+  </div>
+</details>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="p3">
+<h2 data-short="3 · Is it anonymous now?"><span class="part-no">Part 3</span> · Is it actually anonymous now?</h2>
+<p class="timing">In pairs · about 12 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">k-anonymity: could anyone be picked out?</h3>
+  <p>Names gone, ages banded, postcodes cut back, dates converted. It feels safe. <strong>Feeling safe is not a method.</strong></p>
+  <p>Here is a simple test. Choose the facts about a person that someone could know from elsewhere (their sex, roughly how old they are, where they live).
+  Now count how many people in the data share each <em>combination</em> of those facts. If a combination belongs to only one person, that person can be picked out by anyone who knows those few facts.
+  A dataset is called <strong>k-anonymous</strong> when every combination that appears belongs to at least <em>k</em> people. UK health data often uses k = 5 as a rule of thumb (it is a convention, not a law).</p>
+  <div class="tablewrap"><table>
+    <tr><th colspan="4">A toy example with six people, checking sex and age band</th></tr>
+    <tr><th>sex</th><th>age band</th><th>how many share it</th><th></th></tr>
+    <tr><td>F</td><td>65-74</td><td>3</td><td>fine for k = 3</td></tr>
+    <tr><td>M</td><td>65-74</td><td>2</td><td>fails k = 3</td></tr>
+    <tr><td>M</td><td>85+</td><td>1</td><td><strong>unique: this person can be picked out</strong></td></tr>
+  </table></div>
+  <p>The code below does that count for NORTHSTAR. You do not need to follow every line: it reports the smallest group, how many people are alone in their group, and how many people are in groups smaller than k.</p>
+</div>
+
+<div class="cell run" data-run="w6.k1" data-predict="with only sex and age band, how many of the 100 patients will be in a group smaller than 5?">
+  <span class="tag">Run</span>
+  <p>First check: two facts, sex and age band.</p>
+  <div class="codebox" data-say="Group the rows by the chosen columns and count each group. Report the smallest group, how many groups have one person, and how many people are in groups smaller than k.">
+<script type="text/plain" data-lang="r">
+k_check <- function(frame, indirect_identifiers, k = 5) {
+  sizes <- table(frame[indirect_identifiers], useNA = "ifany")   # people per combination
+  sizes <- sizes[sizes > 0]                                       # only combinations that occur
+  cat("indirect identifiers:", indirect_identifiers, "\n")
+  cat("  smallest group size (k)     :", min(sizes), "\n")
+  cat("  combinations seen only once :", sum(sizes == 1), "\n")
+  cat("  rows in groups smaller than", k, ":", sum(sizes[sizes < k]), "of", nrow(frame), "\n")
+}
+
+k_check(safe, c("sex", "age_band"))
+</script>
+<script type="text/plain" data-lang="py">
+def k_check(frame, indirect_identifiers, k=5):
+    groups = frame.groupby(indirect_identifiers, dropna=False, observed=True).size()   # people per combination
+    print("indirect identifiers:", indirect_identifiers)
+    print("  smallest group size (k)     :", groups.min())
+    print("  combinations seen only once :", (groups == 1).sum())
+    print(f"  rows in groups smaller than {k}:", groups[groups < k].sum(), "of", len(frame))
+
+k_check(safe, ["sex", "age_band"])
+</script>
+  </div>
+</div>
+
+<div class="cell run" data-run="w6.k2" data-predict="add postcode district. Now how many patients are in a group smaller than 5?">
+  <span class="tag">Run</span>
+  <p>Second check: add one more fact, the home district.</p>
+  <div class="codebox" data-say="Run the same check with postcode district added.">
+<script type="text/plain" data-lang="r">
+k_check(safe, c("sex", "age_band", "postcode_district"))
+</script>
+<script type="text/plain" data-lang="py">
+k_check(safe, ["sex", "age_band", "postcode_district"])
+</script>
+  </div>
+</div>
+
+<div class="cell know">
+  <span class="tag">Before you answer</span>
+  <p><strong>One extra field, and the picture collapses.</strong> Risk from indirect identifiers does not add up, it multiplies: each field cuts the 100 patients into finer slices, and you run out of people very quickly.</p>
+  <p>Two things worth knowing before you use the explorer. First, some of the "unique" people are unique only because of how <code>sex</code> was typed
+  (<code>F</code>, <code>M</code>, <code>Male</code>, <code>female</code>, <code>1</code>, <code>2</code>, <code>Unknown</code>): tidying the codes first changes the answer.
+  Second, adding the hospital site changes nothing, because each site draws patients from its own local districts, so the district already tells you the site. A field can be identifying and redundant at the same time.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Your turn 3</span>
+  <h3>Try things, and see what each one costs</h3>
+  <p>Use the explorer. Try at least these three: (1) tick <em>tidy the sex codes first</em>; (2) change home area from district to area; (3) change age to 20-year bands.
+  Watch the three numbers. The code for each try is shown underneath so you can see what you would have typed; you do not have to read it.</p>
+  <div class="explorer noprint" id="kx">
+    <fieldset><legend>Facts someone could know about a person</legend>
+      <label><input type="checkbox" value="sex" checked> sex</label>
+      <label><input type="checkbox" value="age" checked> age</label>
+      <label><input type="checkbox" value="geo" checked> home area</label>
+      <label><input type="checkbox" value="redcap_data_access_group"> site</label>
+      <label><input type="checkbox" value="ethnic_category"> ethnic_category</label>
+      <label><input type="checkbox" value="com_rare_ild"> com_rare_ild (a rare lung disease)</label>
+    </fieldset>
+    <div class="row">
+      <label>Age as <select id="kx-age">
+        <option value="nb">the bands above (7 bands)</option>
+        <option value="b10">10-year bands</option>
+        <option value="b20">20-year bands</option>
+        <option value="b65">under 65 / 65 and over</option>
+      </select></label>
+      <label>Home area as <select id="kx-geo">
+        <option value="district">postcode district (L8)</option>
+        <option value="area">postcode area (L, CH, WA…)</option>
+      </select></label>
+      <label>k = <input type="number" id="kx-k" value="5" min="2" max="20" style="width:4em"></label>
+      <label><input type="checkbox" id="kx-sex"> tidy the sex codes first</label>
+      <label><input type="checkbox" id="kx-sup"> suppress the rows that fail</label>
+    </div>
+    <div class="codebox" id="kx-code">
+<script type="text/plain" data-lang="r">
+k_check(safe, c("sex", "age_band", "postcode_district"))
+</script>
+<script type="text/plain" data-lang="py">
+k_check(safe, ["sex", "age_band", "postcode_district"])
+</script>
+    </div>
+    <div class="output" id="kx-out" aria-live="polite"></div>
+    <button type="button" class="small" id="kx-keep">Copy this result into my answer below</button>
+  </div>
+  <div class="field"><label for="w6-yt3a">In your own words, why does adding one more fact about a person make things worse so quickly?</label>
+    <textarea id="w6-yt3a" class="short" data-save="yt3.why"></textarea></div>
+  <div class="field"><label for="w6-yt3b">What did you try, and what happened to the numbers? (The button above pastes each result in for you.)</label>
+    <textarea id="w6-yt3b" data-save="yt3.route"></textarea></div>
+  <div class="field"><label for="w6-yt3c">Pick the change that made the data safest. What question could a researcher <strong>no longer answer</strong> with the data in that form?</label>
+    <textarea id="w6-yt3c" class="short" data-save="yt3.cost"></textarea></div>
+  <p class="hint">Anyone can make a dataset anonymous by deleting it. The skill is knowing what you gave up.</p>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="p4">
+<h2 data-short="4 · The field everyone forgets"><span class="part-no">Part 4</span> · The field everyone forgets</h2>
+<p class="timing">In pairs · about 8 minutes</p>
+
+<div class="cell read">
+  <span class="tag">Read</span>
+  <p>Nothing has been done to the free-text columns yet. Look at them.</p>
+</div>
+
+<div class="cell run" data-run="w6.comments">
+  <span class="tag">Run</span>
+  <div class="codebox" data-say="Take the clinician comments, leave out the blanks and the repeats, and print what is left.">
+<script type="text/plain" data-lang="r">
+comments <- df$clinician_comments_txt
+comments <- unique(comments[trimws(comments) != ""])     # no blanks, no repeats
+cat(length(comments), "distinct comments\n\n")
+cat(paste("-", comments), sep = "\n")
+</script>
+<script type="text/plain" data-lang="py">
+comments = df["clinician_comments_txt"]
+comments = comments[comments.str.strip() != ""].drop_duplicates()   # no blanks, no repeats
+print(len(comments), "distinct comments\n")
+for c in comments:
+    print("-", c)
+</script>
+  </div>
+</div>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">Free text is where the identifiers hide</h3>
+  <p>Count what you can see in those comments: a next of kin by name, telephone numbers, a street address, named clinicians, a named GP practice, occupations, a language spoken.
+  None of it is in a structured field, so none of the treatment in Part 2 touched it.</p>
+  <p>A computer can be told to look for <em>patterns</em>: anything shaped like a UK phone number, for example (the code below does that with a <em>regular expression</em>).
+  But "retired midwife at this hospital" has no pattern, and in a dataset of 100 patients across 3 sites it points at one person more surely than a phone number does.
+  One comment is not about identity at all: it says <em>consent withdrawn</em>. Notice that the only place that fact appears is in a free-text box.</p>
+</div>
+
+<div class="cell run" data-run="w6.regex">
+  <span class="tag">Run</span>
+  <p>Replace anything shaped like a phone number, then show only the comments that still mention a person.</p>
+  <div class="codebox" data-say="Replace anything shaped like a phone number with [PHONE], then show the comments that mention a title, a relative or a job.">
+<script type="text/plain" data-lang="r">
+PHONE <- "\\b0\\d{3}\\s?\\d{3}\\s?\\d{3,4}\\b|\\b07\\d{3}\\s?\\d{6}\\b"
+redacted <- gsub(PHONE, "[PHONE]", comments, perl = TRUE)
+
+mentions_person <- grepl("\\b(?:Dr|Mrs|Mr|Ms|Rev)\\b|wife|son|daughter|brother|neighbour|employee|midwife",
+                         redacted, perl = TRUE, ignore.case = TRUE)   # Wife or wife
+cat(paste("-", redacted[mentions_person]), sep = "\n")
+</script>
+<script type="text/plain" data-lang="py">
+import re
+PHONE = re.compile(r"\b0\d{3}\s?\d{3}\s?\d{3,4}\b|\b07\d{3}\s?\d{6}\b")
+redacted = comments.str.replace(PHONE, "[PHONE]", regex=True)
+
+mentions_person = redacted.str.contains(r"\b(?:Dr|Mrs|Mr|Ms|Rev)\b|wife|son|daughter|brother|neighbour|employee|midwife",
+                                        case=False, regex=True)   # Wife or wife
+for c in redacted[mentions_person]:
+    print("-", c)
+</script>
+  </div>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Your turn 4</span>
+  <h3>Read the redacted output</h3>
+  <div class="field"><label for="w6-yt4a">List three identifying things the phone-number pattern did <strong>not</strong> catch.</label>
+    <textarea id="w6-yt4a" class="short" data-save="yt4.missed"></textarea></div>
+  <div class="field"><label for="w6-yt4d">So what would you actually do with this column before the data leaves the hospital: release it, remove it, have a person read every comment, or something else? What does your choice cost?</label>
+    <textarea id="w6-yt4d" data-save="yt4.do"></textarea></div>
+</div>
+
+<details class="further">
+  <summary>Going further: the password that would not go away</summary>
+  <div class="cell read">
+    <span class="tag">Read</span>
+    <p>Research code ends up in git repositories. Sooner or later somebody puts a database password in a script, notices, and deletes it.
+    Below is a tiny repository with two commits: one adds a script containing a password, the next removes it. These are terminal commands;
+    the output is shown so you do not need git installed.</p>
+  </div>
+  <div class="cell run" data-run="w6.git1">
+    <span class="tag">Run</span>
+    <p>What does the repository look like now?</p>
+    <div class="codebox" data-say="Show the list of commits, then print the current version of the script.">
+<script type="text/plain" data-lang="sh">
+git log --oneline
+cat analysis.py
+</script>
+    </div>
+  </div>
+  <div class="cell run" data-run="w6.git2" data-predict="the password is not in the current file. Is it gone?">
+    <span class="tag">Run</span>
+    <p><code>git log -p</code> shows every change ever made, including what was removed.</p>
+    <div class="codebox" data-say="Show the full history, with every line added and removed in every commit.">
+<script type="text/plain" data-lang="sh">
+git log -p
+</script>
+    </div>
+  </div>
+  <div class="cell turn">
+    <span class="tag">Optional</span>
+    <div class="field"><label for="w6-yt5a">Where is the password now, and who can read it? If the repository had been pushed to GitHub in between, what is the first thing to do (it is not about git)?</label>
+      <textarea id="w6-yt5a" data-save="yt5.where" data-optional="1"></textarea></div>
+  </div>
+</details>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="p5">
+<h2 data-short="5 · Your verdict"><span class="part-no">Part 5</span> · Your verdict</h2>
+<p class="timing">Debrief · about 10 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Before you answer</span>
+  <p>You are not being asked to say no to the colleague. You are being asked to say <strong>what has to be true first</strong>. A good answer covers:
+  what in the data could identify a patient; what you did about it; what that cost the analysis; what you would refuse to release in any form; and what setting you would insist on instead of a laptop.</p>
+  <p>The <strong>Five Safes</strong> is the framework UK data services use to ask the same question in five parts: safe <em>projects</em>, <em>people</em>, <em>settings</em>, <em>data</em> and <em>outputs</em>.
+  No single safe has to carry all the weight. A Trusted Research Environment is a strong <em>setting</em>, which is why it can hold data that would never be safe to put on a laptop.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Your turn 5</span>
+  <h3>What do you tell them?</h3>
+  <p>A clinical colleague asks for a copy of this dataset on their laptop so they can start modelling. Four to six sentences.</p>
+  <div class="field"><label for="w6-yt6">Your verdict</label>
+    <textarea id="w6-yt6" class="long" data-save="yt6.verdict"></textarea></div>
+</div>
+
+<div class="cell turn">
+  <span class="tag">For your notes</span>
+  <h3>Five Safes mapping</h3>
+  <p>One sentence per safe, for <em>this</em> project with the linkage added.</p>
+  <div class="tablewrap"><table class="form" data-key="safes" data-head="Safe|The question" data-cols="For this project|Holds as things stand?:Yes,Partly,No,Not known">
+    <tr data-id="projects"><td><strong>Projects</strong></td><td>Is this use of the data appropriate?</td></tr>
+    <tr data-id="people"><td><strong>People</strong></td><td>Can the users be trusted to use it appropriately?</td></tr>
+    <tr data-id="settings"><td><strong>Settings</strong></td><td>Does the access environment prevent unauthorised use?</td></tr>
+    <tr data-id="data"><td><strong>Data</strong></td><td>Is there a disclosure risk in the data itself?</td></tr>
+    <tr data-id="outputs"><td><strong>Outputs</strong></td><td>Are the statistical results non-disclosive?</td></tr>
+  </table></div>
+  <div class="field"><label for="w6-debrief">The colleague's model needs <strong>exact admission dates</strong> to work, and you removed them. Would keeping them be acceptable inside a Trusted Research Environment when it was not on a laptop? <strong>Who decides?</strong></label>
+    <textarea id="w6-debrief" data-save="debrief.dates"></textarea></div>
+</div>
+</section>
+
+<section id="finish">
+  <h2>Download your work</h2>
+  <p>Your answers are saved in this browser as you type. Before you leave, download a copy for your notes. Your diagram additions, risk table and Five Safes mapping
+  are the parts you will most want to look back at.</p>
+</section>
+
+</main>
+</div>
+<footer class="site">DASC513 · Week 6 · NORTHSTAR is synthetic teaching data. Nothing you type is sent anywhere.</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/northstar.js"></script>
+<script src="assets/render.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/week6.js"></script>
+</body>
+</html>

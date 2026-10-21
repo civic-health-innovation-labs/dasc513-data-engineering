@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 5 First Contact</title>
+<meta name="description" content="DASC513 week 5 practical: first contact with the NORTHSTAR dataset, intended use, provenance, FAIR and mapping.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d5c63'/%3E%3Cpath d='M16 5l2.6 7.9H27l-6.8 4.9 2.6 8L16 21l-6.8 4.8 2.6-8L5 12.9h8.4z' fill='%23fff'/%3E%3C/svg%3E">
+</head>
+<body data-week="5">
+<div class="layout">
+<aside class="toc"></aside>
+<main id="main">
+
+<div class="hero">
+  <div class="kicker">Week 5 · Foundations · Practical</div>
+  <h1>First contact with NORTHSTAR</h1>
+  <p class="lede">Today you look at a clinical dataset before touching it, and write down what you know,
+  what you do not know, and what it would have to be for the job someone wants to do with it.</p>
+</div>
+
+<div class="scenario">
+  <p><strong>The scenario for the next four weeks</strong></p>
+  <p>A clinical colleague wants to use NORTHSTAR to build a model predicting <strong>death in hospital</strong>
+  from admission observations and blood results, across the three sites. They would like to start training next week.</p>
+</div>
+
+<details open>
+  <summary>Plan for the session (2 hours, timings indicative)</summary>
+  <table class="plan">
+    <tr><td>0:00</td><td>Brief: the scenario, and what you have been given</td></tr>
+    <tr><td>0:10</td><td>Parts 0 and 1, together: open the data and ask it questions</td></tr>
+    <tr><td>0:35</td><td>Task 1, in pairs: intended-use statement and provenance sheet</td></tr>
+    <tr><td>1:00</td><td>Break</td></tr>
+    <tr><td>1:10</td><td>Part 2 and Task 2, in pairs: three fields, FAIR, and a first mapping</td></tr>
+    <tr><td>1:40</td><td>Part 3, debrief: what the data dictionary does not tell you</td></tr>
+    <tr><td>1:50</td><td>Exit ticket, then download your work</td></tr>
+  </table>
+  <p class="hint">Timings are a guide, not a clock: spend longer where the discussion is useful. Boxes marked <strong>Going further</strong> are optional. Open them if you finish early; nothing in them is needed later.</p>
+</details>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">How to work today</h3>
+  <p>Every task follows the same three steps: <strong>look</strong> at the data without deciding anything yet; turn what you noticed into a
+  <strong>question</strong> that has an answer; then <strong>decide</strong> what it means for the colleague's model, and write that down.
+  The last step is the one people skip. A page full of tables and empty of decisions will not help you later.</p>
+  <p>Code is shown in <strong>R</strong> and in <strong>Python</strong>; pick the tab you prefer and the page remembers it. You do not have to write any code,
+  and you do not have to understand every symbol. Read the line in English under each code box, press <strong>Run</strong>, and look at what comes out.
+  Work with the person next to you.</p>
+</div>
+
+<!-- ================================================================ -->
+<section class="part" id="p0">
+<h2 data-short="0 · Opening the data"><span class="part-no">Part 0</span> · Opening the data</h2>
+<p class="timing">With the class · about 12 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <p>A table of data is called a <strong>data frame</strong> in both R and Python, and almost everyone calls their first one <code>df</code>.
+  One row per record, one column per field.</p>
+  <p><strong>Why read every value as text?</strong> Left alone, R and Python guess what each column contains. They are quite good at guessing, and that is the problem:
+  they will quietly turn <code>"01"</code> into the number 1, and they will each decide for you which words mean "missing". Today we want to see the data
+  <strong>as it was actually typed</strong>, so we read everything as text and decide later, on purpose.</p>
+</div>
+
+<div class="cell run" data-run="w5.load">
+  <span class="tag">Run</span>
+  <p>Load the export and the data dictionary.</p>
+  <div class="codebox" data-say="Read the two CSV files from the course repository, keeping every value exactly as typed, then report how big they are.">
+<script type="text/plain" data-lang="r">
+# Load the data straight from the course GitHub repository.
+repo <- "https://raw.githubusercontent.com/civic-health-innovation-labs/dasc513-data-engineering/main/"
+
+df <- read.csv(paste0(repo, "NORTHSTAR_redcap_export.csv"),
+               colClasses = "character",    # read every value as text
+               na.strings = character(0))   # and do not decide for us what "missing" means
+data_dictionary <- read.csv(paste0(repo, "NORTHSTAR_data_dictionary.csv"),
+               colClasses = "character", na.strings = character(0))
+
+cat("loaded", nrow(df), "records with", ncol(df), "fields,",
+    "and a data dictionary of", nrow(data_dictionary), "rows\n")
+</script>
+<script type="text/plain" data-lang="py">
+# Load the data straight from the course GitHub repository.
+import pandas as pd
+repo = "https://raw.githubusercontent.com/civic-health-innovation-labs/dasc513-data-engineering/main/"
+
+df = pd.read_csv(repo + "NORTHSTAR_redcap_export.csv",
+                 dtype=str,                 # read every value as text
+                 keep_default_na=False)     # and do not decide for us what "missing" means
+data_dictionary = pd.read_csv(repo + "NORTHSTAR_data_dictionary.csv",
+                 dtype=str, keep_default_na=False)
+
+print(f"loaded {df.shape[0]} records with {df.shape[1]} fields, "
+      f"and a data dictionary of {len(data_dictionary)} rows")
+</script>
+  </div>
+</div>
+
+<div class="cell run" data-run="w5.head">
+  <span class="tag">Run</span>
+  <p>Look at the first three records. The table is very wide, so it is flipped on its side: each column of the data becomes a row here.</p>
+  <div class="codebox" data-say="Take the first three rows of df and flip rows and columns so it fits on the screen.">
+<script type="text/plain" data-lang="r">
+t(head(df, 3))
+</script>
+<script type="text/plain" data-lang="py">
+df.head(3).T
+</script>
+  </div>
+  <div class="output tall"></div>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Your turn 1</span>
+  <h3>What is in front of you?</h3>
+  <p>Look at the output above and answer in words.</p>
+  <div class="field"><label for="w5-yt1a">What does one <strong>row</strong> represent?</label>
+    <textarea id="w5-yt1a" class="short" data-save="yt1.row"></textarea></div>
+  <div class="field"><label for="w5-yt1b">Name three columns that could identify a real person.</label>
+    <textarea id="w5-yt1b" class="short" data-save="yt1.ids"></textarea></div>
+  <p>The <strong>data dictionary</strong> is the document that is supposed to explain every column: what it means, what values it can take, and in what units.
+  Pick a column you do not understand and look it up.</p>
+  <div class="lookup noprint">
+    <label for="w5-lookup">Look up a column in the data dictionary:</label>
+    <select id="w5-lookup"></select>
+  </div>
+  <div class="output" id="w5-lookup-out"></div>
+  <div class="field"><label for="w5-yt1d">Which column did you look up, and what did the dictionary tell you? If the column is not in there, that is not your mistake:
+    write down that the dictionary is incomplete, because that is itself a finding.</label>
+    <textarea id="w5-yt1d" class="short" data-save="yt1.dict"></textarea></div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="p1">
+<h2 data-short="1 · Asking a column a question"><span class="part-no">Part 1</span> · Asking a single column a question</h2>
+<p class="timing">With the class · about 13 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <p>The single most useful thing you can do to a column is <strong>count what is in it</strong>: how many times each different value appears.
+  In R that is <code>table()</code>; in Python, <code>value_counts()</code>. Then compare the list with what the data dictionary says the column should contain.
+  When the values do not match what the dictionary promised, that is called a <strong>conformance</strong> problem.</p>
+</div>
+
+<div class="cell run" data-run="w5.sex" data-predict="how many different values do you expect the sex column to contain?">
+  <span class="tag">Run</span>
+  <div class="codebox" data-say="Count how many times each value appears in the sex column of df, most common first.">
+<script type="text/plain" data-lang="r">
+sort(table(df$sex), decreasing = TRUE)
+</script>
+<script type="text/plain" data-lang="py">
+df["sex"].value_counts()
+</script>
+  </div>
+</div>
+
+<div class="cell know">
+  <span class="tag">Before you answer</span>
+  <p>You probably expected two values. The dictionary says <code>sex</code> is a choice between two options (<code>M, Male | F, Female</code>). The data contain seven different spellings.
+  Somewhere between the form and this export, values were typed or pasted without being checked.</p>
+  <p><strong>Why it matters:</strong> any code that keeps only the rows where sex is <code>"F"</code> silently drops the patients recorded as <code>female</code> or <code>2</code>. Not with an error. Silently.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Your turn 2</span>
+  <h3>Count a different column</h3>
+  <p>Pick a column and count its values. Compare what you see with what the data dictionary says the column should contain.
+  Good ones to try: <code>consent_type</code>, <code>outcome</code>, <code>smoking_status</code>, <code>ethnic_category</code>, <code>site_code</code>.</p>
+  <div class="lookup noprint">
+    <label for="w5-col">Column:</label>
+    <select id="w5-col"></select>
+    <button type="button" class="runbtn" id="w5-col-run">▶ Count it</button>
+  </div>
+  <div class="codebox" id="w5-col-code">
+<script type="text/plain" data-lang="r">
+sort(table(df$consent_type), decreasing = TRUE)
+</script>
+<script type="text/plain" data-lang="py">
+df["consent_type"].value_counts()
+</script>
+  </div>
+  <div class="output" id="w5-col-out"></div>
+  <div class="field"><label for="w5-yt2">Which column did you choose, and what did you notice when you compared it with the dictionary?</label>
+    <textarea id="w5-yt2" data-save="yt2.notice"></textarea></div>
+
+  <div class="cell know" style="margin:14px 0">
+    <span class="tag">Before you answer</span>
+    <h4 style="margin-top:0">99, 999, Z and blank</h4>
+    <p>Count <code>ethnic_category</code> and you will see the codes <code>99</code> and <code>999</code>, a <code>Z</code>, and some blanks. These are not all the same thing.
+    In the NHS Data Dictionary, <code>99</code> is a real code meaning <em>not known</em> (nobody asked, or the answer was not recorded) and <code>Z</code> means <em>not stated</em>
+    (the person was asked and chose not to say). <code>999</code> is not an NHS code at all: it is somebody's shorthand for "I didn't fill this in". A blank could be any of these.</p>
+  </div>
+  <div class="field"><label for="w5-yt2b2">What goes wrong if your analysis treats <code>99</code> as a real ethnic group? And what is lost if you lump <code>99</code>, <code>999</code>, <code>Z</code> and blank together as "missing"?</label>
+    <textarea id="w5-yt2b2" data-save="yt2.same"></textarea></div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="t1">
+<h2 data-short="Task 1 · Intended use and provenance"><span class="part-no">Task 1</span> · Intended use and provenance</h2>
+<p class="timing">In pairs · about 25 minutes · keep these: you will come back to them in weeks 7 and 8</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">A dataset is not good or bad. It is fit, or unfit, for a stated purpose.</h3>
+  <p>An <strong>intended-use statement</strong> writes the purpose down <em>before</em> you look at whether the dataset can support it. Write it now, before anything has been cleaned.
+  At the end of the block you will be asked whether it survived.</p>
+  <p>Fill every box. Where you do not know, write <em>not known</em> and say what you would need to find out.
+  <strong>An honest gap is worth more than a confident guess.</strong></p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Task 1a</span>
+  <h3>Intended-use statement</h3>
+  <p class="timing">About 13 minutes</p>
+  <div class="tablewrap"><table class="form" data-key="iu" data-head="" data-cols="Your answer">
+    <tr data-id="decision"><td><strong>What decision will the model support?</strong> Who acts on the prediction, and what do they do differently?</td></tr>
+    <tr data-id="outcome"><td><strong>The outcome to be predicted</strong>, in the words a clinician would use. Then: which field in the dataset records it, and is that the same thing?</td></tr>
+    <tr data-id="predictors"><td><strong>The predictors</strong> the colleague expects to use (list the fields), and whether they are all known at the time the prediction would be made</td></tr>
+    <tr data-id="population"><td><strong>Who the model is for</strong> (the patients it will be applied to) compared with <strong>who is in the dataset</strong>. Who will the model meet that the data does not contain?</td></tr>
+    <tr data-id="unfit"><td><strong>The dataset would be unfit if…</strong> Name at least two things that would stop the project.</td></tr>
+  </table></div>
+  <h4>What you could not find out</h4>
+  <p>List the questions above that you could not answer from the export, the data dictionary and the scenario. For each, say <strong>who</strong> you would ask.</p>
+  <div class="tablewrap"><table class="form rows" data-rows="iu.unknowns" data-caption="What I could not find out" data-min="2">
+    <thead><tr><th>Question</th><th>Who could answer it</th></tr></thead><tbody></tbody>
+  </table></div>
+  <details>
+    <summary>Worked example, on a different dataset so you cannot copy it</summary>
+    <p><em>Scenario: use a GP practice's asthma register to predict which patients will have an exacerbation in the next 12 months.</em></p>
+    <table>
+      <tr><th>Decision supported</th><td>The practice nurse decides who is invited for an annual review first. Nothing clinical changes for patients not flagged.</td></tr>
+      <tr><th>Outcome, clinical words</th><td>An asthma exacerbation needing oral steroids or an unplanned attendance. <em>As a field: not known.</em> The register records diagnosis, not events. A prescription of prednisolone might be usable as a stand-in; it would also catch other conditions.</td></tr>
+      <tr><th>Predictors and timing</th><td>Prescriptions and attendances in the previous 12 months. Anything recorded after the start of the year must be excluded.</td></tr>
+      <tr><th>Who is missing</th><td>Patients with asthma not on the register (never coded); patients who moved practice mid-year.</td></tr>
+      <tr><th>Unfit if…</th><td>The stand-in outcome cannot be separated from steroid prescriptions for other reasons; or fewer than about 30 events occur in a year at this practice.</td></tr>
+    </table>
+  </details>
+</div>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">Provenance: where did this come from, and what has happened to it?</h3>
+  <p>Provenance is the record of a dataset's origin and history. You have three sources today: the export, the data dictionary, and the scenario. Nothing else.
+  For every box, write what you found and mark how sure you are:</p>
+  <p><strong>S</strong> stated in a source you can point to · <strong>I</strong> inferred from the data (a reasonable guess from what you can see) · <strong>?</strong> not known</p>
+  <p>Boxes you cannot fill are the important ones. They are the deliverable.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Task 1b</span>
+  <h3>Dataset provenance sheet</h3>
+  <p class="timing">About 12 minutes</p>
+  <details>
+    <summary>Example row, completed</summary>
+    <table>
+      <tr><th>How it was captured</th><td>REDCap export: the file has <code>redcap_data_access_group</code> and <code>*_complete</code> status columns, which REDCap adds. Whether the form was completed on paper first is not recorded.</td><td><strong>I</strong> (the tool) / <strong>?</strong> (paper or direct entry)</td></tr>
+    </table>
+  </details>
+  <div class="tablewrap"><table class="form" data-key="prov" data-head="" data-cols="What you found, and where|S / I / ?:S,I,?">
+    <tr data-id="design"><td>Study name and design (cohort, trial, registry, routine care…)</td></tr>
+    <tr data-id="who"><td>Who collected the data (organisation, sites), and why (the original purpose, in one line)</td></tr>
+    <tr data-id="when"><td>When: recruitment window, and date of the export</td></tr>
+    <tr data-id="how"><td>How it was captured (paper form, REDCap, pulled from the electronic health record…), and by whom</td></tr>
+    <tr data-id="consent"><td>Consent: how participants agreed, and whether that covers <strong>this</strong> use (an AI model, across sites)</td></tr>
+    <tr data-id="processed"><td>What happened to it before it reached you: anything removed, cleaned, coded or de-identified? Is this the whole study or part of it?</td></tr>
+    <tr data-id="undocumented"><td>Fields in the export that the dictionary does not describe (count, and the one that worries you most). <em>Leave until Part 3.</em></td></tr>
+  </table></div>
+  <div class="kpi"><div><b id="w5-qcount">0</b><span>boxes marked ? so far, of <span id="w5-qtotal">7</span></span></div></div>
+  <div class="field"><label for="w5-pe2">The single most important gap, and who you would ask. Is it something a person could <strong>look up</strong> (an engineering question) or something a person has to <strong>decide or grant</strong> (a governance question)?</label>
+    <textarea id="w5-pe2" data-save="prov.e.gap"></textarea></div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="p2">
+<h2 data-short="2 · Three fields to map"><span class="part-no">Part 2</span> · Three fields you will map to a standard</h2>
+<p class="timing">In pairs, after the break · about 10 minutes</p>
+
+<div class="cell read">
+  <span class="tag">Read</span>
+  <p>In Task 2 you will take three fields and say what standard code system each should be mapped to.
+  First, look at what is actually in them, so you map the real values rather than the column name.</p>
+  <ul>
+    <li><code>com_other_txt</code>: a free-text "other comorbidity" box</li>
+    <li><code>meds_on_admission_txt</code>: medication as copied from the drug chart</li>
+    <li><code>crp_adm</code>: a laboratory result, C-reactive protein at admission</li>
+  </ul>
+</div>
+
+<div class="cell run" data-run="w5.com">
+  <span class="tag">Run</span>
+  <p>Every distinct value in the free-text comorbidity field, with a count.</p>
+  <div class="codebox" data-say="Count each different value in the other-comorbidity column.">
+<script type="text/plain" data-lang="r">
+sort(table(df$com_other_txt), decreasing = TRUE)
+</script>
+<script type="text/plain" data-lang="py">
+df["com_other_txt"].value_counts()
+</script>
+  </div>
+</div>
+
+<div class="cell run" data-run="w5.meds">
+  <span class="tag">Run</span>
+  <p>Ten medication strings. Read them as a pharmacist would, then as a computer would.</p>
+  <div class="codebox" data-say="Take the medication column, leave out the blanks, and print the first ten.">
+<script type="text/plain" data-lang="r">
+meds <- df$meds_on_admission_txt
+meds <- meds[meds != ""]                 # leave out the blanks
+cat(paste("-", head(meds, 10)), sep = "\n")
+</script>
+<script type="text/plain" data-lang="py">
+meds = df["meds_on_admission_txt"]
+meds = meds[meds != ""]                  # leave out the blanks
+for m in meds.head(10):
+    print("-", m)
+</script>
+  </div>
+</div>
+
+<div class="cell run" data-run="w5.crp" data-predict="a lab result should be a number. Will every value be one?">
+  <span class="tag">Run</span>
+  <p>The lab result: what the data dictionary says about it, what the values look like, and which of them are not numbers at all.</p>
+  <div class="codebox" data-say="Show the dictionary entry for crp_adm and its first eight values; try to turn every value into a number, and list the ones that will not go.">
+<script type="text/plain" data-lang="r">
+data_dictionary[data_dictionary$variable_name == "crp_adm", ]
+cat("First eight values:", head(df$crp_adm, 8), "\n")
+
+# Try to turn each value into a number. Anything that is not a number becomes NA.
+as_number <- suppressWarnings(as.numeric(df$crp_adm))
+table(df$crp_adm[is.na(as_number)])        # the values that are NOT numbers
+max(as_number, na.rm = TRUE)               # the largest value that is
+</script>
+<script type="text/plain" data-lang="py">
+print(data_dictionary[data_dictionary["variable_name"] == "crp_adm"].T)
+print("First eight values:", df["crp_adm"].head(8).tolist())
+
+# Try to turn each value into a number. Anything that is not a number becomes NaN.
+as_number = pd.to_numeric(df["crp_adm"], errors="coerce")
+print(df.loc[as_number.isna(), "crp_adm"].value_counts())   # the values that are NOT numbers
+print("Largest numeric value:", as_number.max())
+</script>
+  </div>
+</div>
+
+<div class="cell know">
+  <span class="tag">Before you answer</span>
+  <p><strong>A lab result that cannot be turned into a number is not a lab result yet.</strong> Some of these values are words, not numbers.
+  And look at the largest value that <em>is</em> a number: is that a plausible blood result, or is it another way of writing "not done"? You will meet this again in week 7.</p>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="t2">
+<h2 data-short="Task 2 · FAIR and mapping"><span class="part-no">Task 2</span> · FAIR assessment and first mapping</h2>
+<p class="timing">In pairs · about 20 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">FAIR: four questions about whether a dataset can be reused</h3>
+  <p>FAIR (Wilkinson et al., 2016) is a checklist for whether other people, and other people's <em>computers</em>, can make use of a dataset.
+  Two things it does <strong>not</strong> mean: FAIR is not <em>open</em> (a dataset locked inside a Trusted Research Environment can be fully FAIR),
+  and FAIR is not about whether the file looks tidy to you.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Letter</th><th>The question</th><th>For a clinical study dataset, that means…</th></tr>
+    <tr><td><strong>F</strong>indable</td><td>Could someone discover that this dataset exists?</td><td>It has a permanent identifier (not just a filename), a description, and is listed in a catalogue</td></tr>
+    <tr><td><strong>A</strong>ccessible</td><td>Is there a defined way to ask for it and receive it?</td><td>An access process, a TRE or an API, rather than a spreadsheet attached to an email</td></tr>
+    <tr><td><strong>I</strong>nteroperable</td><td>Could it be combined with other data without a person translating it?</td><td>Fields use shared code systems (SNOMED CT, ICD-10, dm+d, LOINC) rather than local codes or free text</td></tr>
+    <tr><td><strong>R</strong>eusable</td><td>Could someone else use it correctly?</td><td>The licence, the provenance and the processing history are written down, and the structure follows a recognised model</td></tr>
+  </table></div>
+  <p>Score NORTHSTAR as you received it: the export, the data dictionary, the scenario, nothing else.
+  <strong>2</strong> met · <strong>1</strong> partly · <strong>0</strong> not met · <strong>?</strong> cannot tell. One line of justification each, always.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Task 2a</span>
+  <h3>FAIR, four points</h3>
+  <p class="timing">About 8 minutes</p>
+  <details>
+    <summary>Example, completed for F</summary>
+    <table><tr><th>F</th><td>Score <strong>1</strong></td><td>Each record has a <code>record_id</code>, and the export carries the study name in the file name, but there is no DOI or dataset-level identifier, nothing says which export this is, and it is not listed anywhere outside the study.</td></tr></table>
+  </details>
+  <div class="tablewrap"><table class="form" id="fair" data-key="fair" data-head="#|Question" data-cols="Score:2,1,0,?|Justification (one line)">
+    <tr data-id="F"><td>F</td><td><strong>Findable.</strong> Identifier, description, catalogue entry</td></tr>
+    <tr data-id="A"><td>A</td><td><strong>Accessible.</strong> A defined way to request and receive it</td></tr>
+    <tr data-id="I"><td>I</td><td><strong>Interoperable.</strong> Shared code systems, consistent formats and units</td></tr>
+    <tr data-id="R"><td>R</td><td><strong>Reusable.</strong> Licence, provenance and processing history written down</td></tr>
+  </table></div>
+  <p class="score-total">Total: <span id="fair-total">0</span> / 8 <span class="hint" id="fair-note"></span></p>
+  <div class="field"><label for="w5-f1">The <strong>cheapest improvement</strong> that would raise the score: which letter, what change, and who would have to do it.</label>
+    <textarea id="w5-f1" class="short" data-save="fair.q.cheap"></textarea></div>
+</div>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">Mapping: saying the same thing in a shared language</h3>
+  <p>Hospitals write the same fact in different words. A <strong>terminology</strong> is an agreed list of codes so that "OSA on CPAP" at one site and "sleep apnoea, uses CPAP" at another
+  become the same code. The lecture gave you four terminologies and one common data model:</p>
+  <div class="tablewrap"><table>
+    <tr><th>Standard</th><th>What it codes</th><th>Where you meet it in England</th></tr>
+    <tr><td><strong>SNOMED CT</strong></td><td>Clinical findings, disorders, procedures and much else</td><td>The mandated terminology for NHS clinical records</td></tr>
+    <tr><td><strong>ICD-10</strong></td><td>Diagnoses, for statistics and payment</td><td>Hospital Episode Statistics, death certificates</td></tr>
+    <tr><td><strong>dm+d</strong></td><td>Medicines and devices</td><td>Prescribing systems, GP records, dispensing</td></tr>
+    <tr><td><strong>LOINC</strong></td><td>Laboratory tests and observations (what was measured; the value and unit sit alongside)</td><td>International; used by OMOP for measurements. NHS pathology in England is moving to SNOMED CT, so you will meet both</td></tr>
+    <tr><td><strong>OMOP CDM</strong></td><td>Not a terminology: a <em>shared table structure</em> that coded data is placed into, so analysis code can be reused across sites</td><td>Research databases; the target for a lot of UK data engineering work</td></tr>
+  </table></div>
+  <p>You will not be able to map everything, and you are not expected to look up actual codes today: concept names in words are enough.
+  Where a value cannot be mapped, write down why. That is the finding.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Task 2b</span>
+  <h3>First mapping: three fields to a standard</h3>
+  <p class="timing">About 12 minutes</p>
+  <p>Look at <code>OSA on CPAP</code> and <code>see GP summary</code> in particular.</p>
+  <div class="tablewrap"><table class="form" data-key="map" data-head="" data-cols="com_other_txt|meds_on_admission_txt|crp_adm">
+    <tr data-id="example"><td><strong>One example value</strong> from the data, and what the dictionary says the field is</td></tr>
+    <tr data-id="terminology"><td><strong>Which terminology</strong> it should map to, and roughly which concept your example becomes (in words)</td></tr>
+    <tr data-id="nomap"><td><strong>One value that does not map cleanly</strong>, and what you would do with it</td></tr>
+    <tr data-id="lost"><td><strong>What is lost</strong> in the mapping (detail, timing, context, uncertainty…)</td></tr>
+  </table></div>
+  <div class="field"><label for="w5-m1">Which of the three fields is the <strong>easiest to code and the hardest to trust</strong>? (Hint: look at the values, not the column name.)</label>
+    <textarea id="w5-m1" class="short" data-save="map.q.trust"></textarea></div>
+  <div class="field"><label for="w5-m2">If the colleague's model used these three fields as predictors next week, <strong>without any mapping</strong>, what would the model actually be learning from?</label>
+    <textarea id="w5-m2" data-save="map.q.learn"></textarea></div>
+  <p class="hint">Keep this table: it is the start of a "target data model sketch", an idea you will meet again in the assessment.</p>
+</div>
+
+<details class="further">
+  <summary>Going further: a fourth field with no clean equivalent</summary>
+  <div class="cell run" data-run="w5.site">
+    <span class="tag">Run</span>
+    <p>Look at <code>site_code</code>. There are three sites and more than three codes.</p>
+    <div class="codebox" data-say="Count each different value in the site_code column.">
+<script type="text/plain" data-lang="r">
+sort(table(df$site_code), decreasing = TRUE)
+</script>
+<script type="text/plain" data-lang="py">
+df["site_code"].value_counts()
+</script>
+    </div>
+  </div>
+  <div class="cell turn">
+    <span class="tag">Optional</span>
+    <div class="field"><label for="w5-m4">Which standard would you map this to? (There is a defensible answer, and it is not one of the four above: NHS organisations have their own code list, the ODS code.) What would you have to do before you could map it at all?</label>
+      <textarea id="w5-m4" data-save="map.stretch" data-optional="1"></textarea></div>
+  </div>
+</details>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="p3">
+<h2 data-short="3 · What the dictionary leaves out"><span class="part-no">Part 3</span> · What the data dictionary does not tell you</h2>
+<p class="timing">Debrief, with the class · about 10 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <p>In Your turn 1 you checked one column against the data dictionary by eye. The computer can check all of them at once: list every column in the export, and keep the ones whose names are not in the dictionary.
+  This is the first time you use code to ask a question about the <em>documentation</em> rather than the data, and it is a habit worth keeping.</p>
+  <p>REDCap adds a status column ending in <code>_complete</code> for every form, so those are left out of the count.</p>
+</div>
+
+<div class="cell run" data-run="w5.undoc" data-predict="how many fields do you think have no entry in the dictionary?">
+  <span class="tag">Run</span>
+  <div class="codebox" data-say="List the columns of df, leave out the REDCap status columns, and keep the ones whose names are not in the data dictionary.">
+<script type="text/plain" data-lang="r">
+documented   <- data_dictionary$variable_name
+in_export    <- names(df)[!endsWith(names(df), "_complete")]
+undocumented <- setdiff(in_export, documented)
+
+cat(length(in_export), "fields in the export,", length(documented), "described in the dictionary\n")
+cat(length(undocumented), "fields with no entry:\n")
+cat(paste("-", undocumented), sep = "\n")
+</script>
+<script type="text/plain" data-lang="py">
+documented   = set(data_dictionary["variable_name"])
+in_export    = [c for c in df.columns if not c.endswith("_complete")]
+undocumented = [c for c in in_export if c not in documented]
+
+print(f"{len(in_export)} fields in the export, {len(documented)} described in the dictionary")
+print(f"{len(undocumented)} fields with no entry:")
+for c in undocumented:
+    print("-", c)
+</script>
+  </div>
+  <div class="output" data-export="Undocumented fields (Part 3 output)"></div>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Your turn 3</span>
+  <h3>The missing documentation</h3>
+  <p>Go back and fill in the last row of your provenance sheet with the count.</p>
+  <div class="field"><label for="w5-yt4a">Which undocumented field worries you most, and why? Think about what it might contain, not just its name. Then: is an incomplete data dictionary a data quality problem, a governance problem, or both?</label>
+    <textarea id="w5-yt4a" data-save="yt4.worry"></textarea></div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="p4">
+<h2 data-short="4 · Exit ticket"><span class="part-no">Part 4</span> · Exit ticket</h2>
+<div class="cell turn">
+  <span class="tag">Exit ticket</span>
+  <h3>Before you leave</h3>
+  <div class="field"><label for="w5-exit">Finish this sentence: "The thing I most want to check about this dataset before I would trust it is…"</label>
+    <textarea id="w5-exit" class="short" data-save="exit"></textarea></div>
+</div>
+</section>
+
+<section id="finish">
+  <h2>Download your work</h2>
+  <p>Your answers are saved in this browser as you type. Before you leave, download a copy for your notes.
+  The Word file opens in Microsoft Word. These pages are your own knowledge base for the block: nothing on them is marked or submitted, but the assessment draws on the ideas you work through here.</p>
+</section>
+
+</main>
+</div>
+<footer class="site">DASC513 · Week 5 · NORTHSTAR is synthetic teaching data. Nothing you type is sent anywhere.</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/northstar.js"></script>
+<script src="assets/render.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/week5.js"></script>
+</body>
+</html>

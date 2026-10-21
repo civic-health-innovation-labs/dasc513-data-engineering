@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="1010" viewBox="0 0 1700 1010">
+<title>NORTHSTAR study simplified data flow diagram with trust boundaries and STRIDE hotspots</title>
+<desc>Three sources (a hospital study site using REDCap, a biobank sample register, and NHS England Hospital Episode Statistics) each sit inside their own trust boundary and send data into a Trusted Research Environment through a single ingress step. Inside the environment the data passes in a straight line through linkage, provisioning, research and egress; an accredited researcher works inside and only checked outputs leave to publication. Nine STRIDE hotspots are marked.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#3d3d3d"/></marker>
+<marker id="arrowgreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#1d7a4d"/></marker>
+</defs>
+<rect width="1700" height="1010" fill="#ffffff"/>
+<text x="40" y="46" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="22" font-weight="bold" fill="#1a1a1a"><tspan x="40" dy="0">NORTHSTAR study — where the data goes, and where the risk is</tspan></text>
+<text x="40" y="70" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="normal" fill="#5a5a5a"><tspan x="40" dy="0">Simplified data flow diagram with trust boundaries and STRIDE hotspots · DASC513 week 6 · teaching example, fictional study</tspan></text>
+<rect x="40" y="120" width="390" height="215" rx="10" fill="none" stroke="#c0392b" stroke-width="1.8" stroke-dasharray="10 6" opacity="0.8"/>
+<rect x="52" y="107" width="334.4" height="24" rx="4" fill="#ffffff"/>
+<text x="60" y="124" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="bold" fill="#c0392b"><tspan x="60" dy="0">TRUST BOUNDARY 1 · Study site (NHS hospital)</tspan></text>
+<rect x="62" y="152" width="160" height="52" rx="3" fill="#e8e8e6" stroke="#4a4a48" stroke-width="1.8"/>
+<text x="72" y="168" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#5a5a5a"><tspan x="72" dy="0">E1</tspan></text>
+<text x="142.0" y="184.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a"><tspan x="142.0" dy="0">Research nurse</tspan></text>
+<rect x="248" y="152" width="160" height="52" rx="3" fill="#e8e8e6" stroke="#4a4a48" stroke-width="1.8"/>
+<text x="258" y="168" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#5a5a5a"><tspan x="258" dy="0">E2</tspan></text>
+<text x="328.0" y="184.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a"><tspan x="328.0" dy="0">Hospital EPR</tspan></text>
+<rect x="60" y="252" width="350" height="54" fill="#fbf3d9" stroke="none"/>
+<line x1="60" y1="252" x2="410" y2="252" stroke="#8a6d1f" stroke-width="2"/>
+<line x1="60" y1="306" x2="410" y2="306" stroke="#8a6d1f" stroke-width="2"/>
+<line x1="106" y1="252" x2="106" y2="306" stroke="#8a6d1f" stroke-width="1.2"/>
+<text x="83" y="284.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#8a6d1f"><tspan x="83" dy="0">D1</tspan></text>
+<text x="258.0" y="277.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="258.0" dy="0">REDCap study database</tspan><tspan x="258.0" dy="14">identifiers + clinical data</tspan></text>
+<rect x="40" y="365" width="390" height="200" rx="10" fill="none" stroke="#c0392b" stroke-width="1.8" stroke-dasharray="10 6" opacity="0.8"/>
+<rect x="52" y="352" width="296.4" height="24" rx="4" fill="#ffffff"/>
+<text x="60" y="369" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="bold" fill="#c0392b"><tspan x="60" dy="0">TRUST BOUNDARY 2 · Biobank / laboratory</tspan></text>
+<rect x="62" y="397" width="190" height="52" rx="3" fill="#e8e8e6" stroke="#4a4a48" stroke-width="1.8"/>
+<text x="72" y="413" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#5a5a5a"><tspan x="72" dy="0">E3</tspan></text>
+<text x="157.0" y="429.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a"><tspan x="157.0" dy="0">Lab / biobank staff</tspan></text>
+<rect x="60" y="482" width="350" height="54" fill="#fbf3d9" stroke="none"/>
+<line x1="60" y1="482" x2="410" y2="482" stroke="#8a6d1f" stroke-width="2"/>
+<line x1="60" y1="536" x2="410" y2="536" stroke="#8a6d1f" stroke-width="2"/>
+<line x1="106" y1="482" x2="106" y2="536" stroke="#8a6d1f" stroke-width="1.2"/>
+<text x="83" y="514.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#8a6d1f"><tspan x="83" dy="0">D2</tspan></text>
+<text x="258.0" y="507.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="258.0" dy="0">Sample register</tspan><tspan x="258.0" dy="14">sample_id + study_id, no names</tspan></text>
+<rect x="40" y="595" width="390" height="200" rx="10" fill="none" stroke="#c0392b" stroke-width="1.8" stroke-dasharray="10 6" opacity="0.8"/>
+<rect x="52" y="582" width="349.59999999999997" height="24" rx="4" fill="#ffffff"/>
+<text x="60" y="599" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="bold" fill="#c0392b"><tspan x="60" dy="0">TRUST BOUNDARY 3 · NHS England (data supplier)</tspan></text>
+<rect x="62" y="627" width="346" height="52" rx="3" fill="#e8e8e6" stroke="#4a4a48" stroke-width="1.8"/>
+<text x="72" y="643" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#5a5a5a"><tspan x="72" dy="0">E4</tspan></text>
+<text x="235.0" y="659.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a"><tspan x="235.0" dy="0">NHS England — Hospital Episode Statistics</tspan></text>
+<rect x="60" y="712" width="350" height="54" fill="#fbf3d9" stroke="none"/>
+<line x1="60" y1="712" x2="410" y2="712" stroke="#8a6d1f" stroke-width="2"/>
+<line x1="60" y1="766" x2="410" y2="766" stroke="#8a6d1f" stroke-width="2"/>
+<line x1="106" y1="712" x2="106" y2="766" stroke="#8a6d1f" stroke-width="1.2"/>
+<text x="83" y="744.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#8a6d1f"><tspan x="83" dy="0">D3</tspan></text>
+<text x="258.0" y="737.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="258.0" dy="0">HES extract for the cohort</tspan><tspan x="258.0" dy="14">keyed by NHS number</tspan></text>
+<path d="M200,204 L200,248" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="56" y="216" width="94.60000000000001" height="31" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="62" y="228" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="62" dy="0">F1 case report</tspan><tspan x="62" dy="13">form entry</tspan></text>
+<path d="M328,204 L328,248" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="334" y="216" width="100.5" height="31" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="340" y="228" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="340" dy="0">F2 demographics</tspan><tspan x="340" dy="13">auto-populated</tspan></text>
+<path d="M157,449 L157,478" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="262" y="458" width="177.20000000000002" height="18" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="268" y="470" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="268" dy="0">F3 study ID typed in by hand</tspan></text>
+<path d="M235,679 L235,708" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="244" y="678" width="135.9" height="31" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="250" y="690" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="250" dy="0">F4 admissions for the</tspan><tspan x="250" dy="13">study's NHS numbers</tspan></text>
+<rect x="480" y="120" width="990" height="675" rx="10" fill="none" stroke="#c0392b" stroke-width="1.8" stroke-dasharray="10 6" opacity="0.8"/>
+<rect x="492" y="107" width="585.1999999999999" height="24" rx="4" fill="#ffffff"/>
+<text x="500" y="124" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="bold" fill="#c0392b"><tspan x="500" dy="0">TRUST BOUNDARY 4 · Trusted Research Environment (NHS Secure Data Environment)</tspan></text>
+<text x="1456" y="783" text-anchor="end" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#c0392b" font-style="italic"><tspan x="1456" dy="0">no internet · no copy-paste · no removable media · everything logged</tspan></text>
+<circle cx="600" cy="330" r="50" fill="#dce9f5" stroke="#2f5f8f" stroke-width="2"/>
+<text x="600" y="298" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#2f5f8f"><tspan x="600" dy="0">1</tspan></text>
+<text x="600" y="329" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="600" dy="0">Data</tspan><tspan x="600" dy="14">ingress</tspan></text>
+<circle cx="790" cy="330" r="50" fill="#dce9f5" stroke="#2f5f8f" stroke-width="2"/>
+<text x="790" y="298" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#2f5f8f"><tspan x="790" dy="0">2</tspan></text>
+<text x="790" y="329" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="790" dy="0">Data</tspan><tspan x="790" dy="14">linkage</tspan></text>
+<circle cx="980" cy="330" r="50" fill="#dce9f5" stroke="#2f5f8f" stroke-width="2"/>
+<text x="980" y="298" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#2f5f8f"><tspan x="980" dy="0">3</tspan></text>
+<text x="980" y="329" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="980" dy="0">Data</tspan><tspan x="980" dy="14">provisioning</tspan></text>
+<circle cx="1170" cy="330" r="50" fill="#dce9f5" stroke="#2f5f8f" stroke-width="2"/>
+<text x="1170" y="298" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#2f5f8f"><tspan x="1170" dy="0">4</tspan></text>
+<text x="1170" y="336" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="1170" dy="0">Research</tspan></text>
+<circle cx="1360" cy="330" r="50" fill="#dce9f5" stroke="#2f5f8f" stroke-width="2"/>
+<text x="1360" y="298" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#2f5f8f"><tspan x="1360" dy="0">5</tspan></text>
+<text x="1360" y="329" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="1360" dy="0">Egress</tspan><tspan x="1360" dy="14">(output check)</tspan></text>
+<rect x="1050" y="560" width="240" height="52" rx="3" fill="#e8e8e6" stroke="#4a4a48" stroke-width="1.8"/>
+<text x="1060" y="576" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#5a5a5a"><tspan x="1060" dy="0">E5</tspan></text>
+<text x="1170.0" y="592.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a"><tspan x="1170.0" dy="0">Researcher (accredited)</tspan></text>
+<rect x="640" y="660" width="400" height="54" fill="#fbf3d9" stroke="none"/>
+<line x1="640" y1="660" x2="1040" y2="660" stroke="#8a6d1f" stroke-width="2"/>
+<line x1="640" y1="714" x2="1040" y2="714" stroke="#8a6d1f" stroke-width="2"/>
+<line x1="686" y1="660" x2="686" y2="714" stroke="#8a6d1f" stroke-width="1.2"/>
+<text x="663" y="692.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" fill="#8a6d1f"><tspan x="663" dy="0">D4</tspan></text>
+<text x="863.0" y="685.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="863.0" dy="0">Audit &amp; access log</tspan><tspan x="863.0" dy="14">every ingress, query and output</tspan></text>
+<rect x="1510" y="304" width="170" height="52" rx="3" fill="#e8e8e6" stroke="#4a4a48" stroke-width="1.8"/>
+<text x="1520" y="320" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#5a5a5a"><tspan x="1520" dy="0">E6</tspan></text>
+<text x="1595.0" y="336.0" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a"><tspan x="1595.0" dy="0">Publication</tspan></text>
+<path d="M410,279 L495,279 L495,316 L551,316" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="422" y="240" width="200.8" height="18" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="428" y="252" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="428" dy="0">F5 full export, WITH identifiers</tspan></text>
+<path d="M410,509 L510,509 L510,330 L551,330" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="434" y="533" width="112.30000000000001" height="18" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="440" y="545" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="440" dy="0">F6 sample results</tspan></text>
+<path d="M410,739 L525,739 L525,344 L555,344" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="434" y="763" width="94.60000000000001" height="18" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="440" y="775" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="440" dy="0">F7 HES extract</tspan></text>
+<path d="M650,330 L740,330" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="618.2" y="266" width="153.60000000000002" height="31" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="695" y="278" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="695" dy="0">F8 identifiers stripped,</tspan><tspan x="695" dy="13">pseudonym applied</tspan></text>
+<path d="M840,330 L930,330" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="817.05" y="266" width="135.9" height="31" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="885" y="278" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="885" dy="0">F9 one linked,</tspan><tspan x="885" dy="13">de-identified dataset</tspan></text>
+<path d="M1030,330 L1120,330" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="1033.6" y="266" width="82.80000000000001" height="31" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="1075" y="278" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="1075" dy="0">F10 approved</tspan><tspan x="1075" dy="13">subset only</tspan></text>
+<path d="M1220,330 L1310,330" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="1220.65" y="266" width="88.7" height="31" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="1265" y="278" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="1265" dy="0">F11 candidate</tspan><tspan x="1265" dy="13">outputs</tspan></text>
+<path d="M1410,330 L1506,330" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="1416.6" y="266" width="82.80000000000001" height="31" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="1458" y="278" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="1458" dy="0">F12 approved</tspan><tspan x="1458" dy="13">outputs only</tspan></text>
+<path d="M1170,560 L1170,382" fill="none" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<rect x="1178" y="458" width="147.70000000000002" height="31" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="1184" y="470" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="1184" dy="0">F13 interactive session</tspan><tspan x="1184" dy="13">(no data leaves)</tspan></text>
+<path d="M980,382 L980,656" fill="none" stroke="#3d3d3d" stroke-width="1.9" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<rect x="988" y="508" width="71.0" height="18" rx="3" fill="#ffffff" opacity="0.93"/>
+<text x="994" y="520" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="994" dy="0">F14 logged</tspan></text>
+<circle cx="300" cy="226" r="13" fill="#c0392b" stroke="#ffffff" stroke-width="2"/>
+<text x="300" y="230" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff"><tspan x="300" dy="0">H1</tspan></text>
+<circle cx="130" cy="462" r="13" fill="#c0392b" stroke="#ffffff" stroke-width="2"/>
+<text x="130" y="466" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff"><tspan x="130" dy="0">H2</tspan></text>
+<circle cx="495" cy="297" r="13" fill="#c0392b" stroke="#ffffff" stroke-width="2"/>
+<text x="495" y="301" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff"><tspan x="495" dy="0">H3</tspan></text>
+<circle cx="748" cy="368" r="13" fill="#c0392b" stroke="#ffffff" stroke-width="2"/>
+<text x="748" y="372" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff"><tspan x="748" dy="0">H4</tspan></text>
+<circle cx="600" cy="268" r="13" fill="#c0392b" stroke="#ffffff" stroke-width="2"/>
+<text x="600" y="272" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff"><tspan x="600" dy="0">H5</tspan></text>
+<circle cx="834" cy="368" r="13" fill="#c0392b" stroke="#ffffff" stroke-width="2"/>
+<text x="834" y="372" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff"><tspan x="834" dy="0">H6</tspan></text>
+<circle cx="1024" cy="368" r="13" fill="#c0392b" stroke="#ffffff" stroke-width="2"/>
+<text x="1024" y="372" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff"><tspan x="1024" dy="0">H7</tspan></text>
+<circle cx="1404" cy="368" r="13" fill="#c0392b" stroke="#ffffff" stroke-width="2"/>
+<text x="1404" y="372" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff"><tspan x="1404" dy="0">H8</tspan></text>
+<circle cx="1044" cy="660" r="13" fill="#c0392b" stroke="#ffffff" stroke-width="2"/>
+<text x="1044" y="664" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff"><tspan x="1044" dy="0">H9</tspan></text>
+<rect x="40" y="830" width="1000" height="152" rx="6" fill="#fdf4f3" stroke="#c0392b" stroke-width="1.2"/>
+<text x="56" y="854" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#c0392b"><tspan x="56" dy="0">STRIDE hotspots — where risk concentrates</tspan></text>
+<text x="56" y="878" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#c0392b"><tspan x="56" dy="0">H1</tspan></text>
+<text x="86" y="878" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a"><tspan x="86" dy="0">Hospital system auto-fills demographics: wrong patient, nobody notices</tspan></text>
+<text x="492" y="878" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="492" dy="0">S · T</tspan></text>
+<text x="56" y="897" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#c0392b"><tspan x="56" dy="0">H2</tspan></text>
+<text x="86" y="897" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a"><tspan x="86" dy="0">Study ID typed by hand onto the sample: transposed digits, no record</tspan></text>
+<text x="492" y="897" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="492" dy="0">T · R</tspan></text>
+<text x="56" y="916" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#c0392b"><tspan x="56" dy="0">H3</tspan></text>
+<text x="86" y="916" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a"><tspan x="86" dy="0">Identifiable export crosses a boundary: interception, wrong recipient</tspan></text>
+<text x="492" y="916" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="492" dy="0">I</tspan></text>
+<text x="56" y="935" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#c0392b"><tspan x="56" dy="0">H4</tspan></text>
+<text x="86" y="935" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a"><tspan x="86" dy="0">Linkage matches the wrong records, or misses the right ones</tspan></text>
+<text x="492" y="935" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="492" dy="0">T · I</tspan></text>
+<text x="56" y="954" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#c0392b"><tspan x="56" dy="0">H5</tspan></text>
+<text x="86" y="954" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a"><tspan x="86" dy="0">The ingress door accepts a file: fake sender, tampered file, flood</tspan></text>
+<text x="492" y="954" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="492" dy="0">S · T · D</tspan></text>
+<text x="560" y="878" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#c0392b"><tspan x="560" dy="0">H6</tspan></text>
+<text x="590" y="878" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a"><tspan x="590" dy="0">Linked data identifies people that separate files did not</tspan></text>
+<text x="980" y="878" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="980" dy="0">I</tspan></text>
+<text x="560" y="897" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#c0392b"><tspan x="560" dy="0">H7</tspan></text>
+<text x="590" y="897" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a"><tspan x="590" dy="0">Project gets more data than it was approved for</tspan></text>
+<text x="980" y="897" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="980" dy="0">E</tspan></text>
+<text x="560" y="916" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#c0392b"><tspan x="560" dy="0">H8</tspan></text>
+<text x="590" y="916" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a"><tspan x="590" dy="0">A disclosive table or model leaves the environment</tspan></text>
+<text x="980" y="916" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="980" dy="0">I</tspan></text>
+<text x="560" y="935" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#c0392b"><tspan x="560" dy="0">H9</tspan></text>
+<text x="590" y="935" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a"><tspan x="590" dy="0">Log incomplete or altered: nobody can prove what happened</tspan></text>
+<text x="980" y="935" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="980" dy="0">R · I</tspan></text>
+<text x="560" y="954" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#c0392b"><tspan x="560" dy="0"></tspan></text>
+<text x="590" y="954" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a" font-style="italic"><tspan x="590" dy="0">S T R I D E = spoofing, tampering, repudiation, information</tspan></text>
+<text x="980" y="954" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#5a5a5a"><tspan x="980" dy="0"></tspan></text>
+<text x="590" y="973" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a" font-style="italic"><tspan x="590" dy="0">disclosure, denial of service, elevation of privilege</tspan></text>
+<rect x="1060" y="830" width="600" height="152" rx="6" fill="#fafafa" stroke="#cccccc"/>
+<text x="1076" y="854" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#1a1a1a"><tspan x="1076" dy="0">Notation</tspan></text>
+<rect x="1076" y="868" width="40" height="20" rx="3" fill="#e8e8e6" stroke="#4a4a48" stroke-width="1.6"/>
+<text x="1126" y="883" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="1126" dy="0">External entity — a person or system outside your control</tspan></text>
+<circle cx="1096" cy="910" r="12" fill="#dce9f5" stroke="#2f5f8f" stroke-width="1.8"/>
+<text x="1126" y="915" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="1126" dy="0">Process — does something to the data</tspan></text>
+<rect x="1076" y="932" width="40" height="20" fill="#fbf3d9"/>
+<line x1="1076" y1="932" x2="1116" y2="932" stroke="#8a6d1f" stroke-width="2"/>
+<line x1="1076" y1="952" x2="1116" y2="952" stroke="#8a6d1f" stroke-width="2"/>
+<text x="1126" y="947" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="1126" dy="0">Data store — where data sits still</tspan></text>
+<line x1="1460" y1="878" x2="1500" y2="878" stroke="#3d3d3d" stroke-width="1.9" marker-end="url(#arrow)"/>
+<text x="1510" y="883" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="1510" dy="0">Data flow, labelled</tspan></text>
+<line x1="1460" y1="910" x2="1500" y2="910" stroke="#c0392b" stroke-width="1.8" stroke-dasharray="8 5"/>
+<text x="1510" y="915" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="1510" dy="0">Trust boundary</tspan></text>
+<circle cx="1480" cy="942" r="11" fill="#c0392b"/>
+<text x="1480" y="946" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="bold" fill="#ffffff"><tspan x="1480" dy="0">H</tspan></text>
+<text x="1510" y="947" text-anchor="start" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a"><tspan x="1510" dy="0">STRIDE hotspot</tspan></text>
+</svg>

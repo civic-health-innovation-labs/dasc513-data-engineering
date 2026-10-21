@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 8 Governance</title>
+<meta name="description" content="DASC513 week 8 practical: a mini DPIA, a data access application with field-level justification, and sitting on the committee that decides.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d5c63'/%3E%3Cpath d='M16 5l2.6 7.9H27l-6.8 4.9 2.6 8L16 21l-6.8 4.8 2.6-8L5 12.9h8.4z' fill='%23fff'/%3E%3C/svg%3E">
+</head>
+<body data-week="8">
+<div class="layout">
+<aside class="toc"></aside>
+<main id="main">
+
+<div class="hero">
+  <div class="kicker">Week 8 · Information governance · Practical</div>
+  <h1>Governance in practice</h1>
+  <p class="lede">Today you play both sides. First the applicant: think about the risks to the people in the data, and ask for only what the question needs.
+  Then the committee: decide whether someone else's request is justified, and say why in writing.</p>
+</div>
+
+<div class="scenario">
+  <p><strong>The project you are applying for</strong></p>
+  <p>A model predicting <strong>death in hospital</strong> from admission observations and blood results, across the three NORTHSTAR sites,
+  inside a Trusted Research Environment, with linkage to Hospital Episode Statistics (HES) for readmissions.</p>
+  <p>Your DPIA and your application must describe <strong>the same project</strong>. The committee will read them side by side.</p>
+</div>
+
+<details open>
+  <summary>Plan for the session (2 hours, timings indicative)</summary>
+  <table class="plan">
+    <tr><td>0:00</td><td>Brief: the two roles, applicant first, then committee</td></tr>
+    <tr><td>0:10</td><td>Task 1, in pairs: mini DPIA (about 30 min)</td></tr>
+    <tr><td>0:40</td><td>Task 2, same pairs: data access application (about 30 min). The field table is the part that matters most.</td></tr>
+    <tr><td>1:10</td><td>Break. Download your work, so you can hand your application to another pair.</td></tr>
+    <tr><td>1:20</td><td>Task 3, two pairs together: the data access committee (about 25 min)</td></tr>
+    <tr><td>1:45</td><td>Debrief: a decision letter read out; the block's closing question</td></tr>
+    <tr><td>1:55</td><td>Download your work</td></tr>
+  </table>
+  <p class="hint">Timings are a guide, not a clock: spend longer where the discussion is useful. Nothing on this page is marked or submitted. It is your own record of how these decisions are made, which is what the assessment draws on.
+  You do not need any code today.</p>
+</details>
+
+<details>
+  <summary>Bring forward: what you need from weeks 5 to 7</summary>
+  <ul>
+    <li><strong>Week 5:</strong> your intended-use statement and provenance gaps (the research question and the unknowns)</li>
+    <li><strong>Week 6:</strong> your data flow diagram, STRIDE table, de-identification choices and k-anonymity result</li>
+    <li><strong>Week 7:</strong> your quality findings (missingness by site, the century bug, the duplicate) and your verdict</li>
+  </ul>
+  <p>Open those pages in another tab: your answers are still saved there.</p>
+</details>
+
+<!-- ================================================================ -->
+<section class="part" id="t1">
+<h2 data-short="Task 1 · Mini DPIA"><span class="part-no">Task 1</span> · Mini data protection impact assessment</h2>
+<p class="timing">In pairs · about 30 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">A DPIA is a written answer to "what could this do to the people in the data, and what are we doing about it?"</h3>
+  <p>The law (UK GDPR Article 35) requires one whenever a use of personal data is likely to put individuals at high risk. The ICO keeps a list of things that count as high risk,
+  and this project hits three of them: health data on a large scale, linking datasets together, and using new technology such as machine learning.</p>
+  <p>The risks are to the <strong>people in the data</strong>, not to your project. "The model might not work" is not a DPIA risk. "Patients at the smaller hospital are missing from the
+  training data, so the model will be worse for them" is.</p>
+  <p>The ICO's template has seven steps. This page compresses them into five short sections, and uses the ICO's own words for the scales:</p>
+  <div class="tablewrap"><table>
+    <tr><th>Scale</th><th>The words</th><th>In plain language</th></tr>
+    <tr><td><strong>Likelihood</strong> of harm</td><td>remote · possible · probable</td><td>Could happen but unlikely · might well happen · expect it to happen</td></tr>
+    <tr><td><strong>Severity</strong> of harm</td><td>minimal · significant · severe</td><td>A nuisance · real harm to some people · serious or lasting harm</td></tr>
+    <tr><td><strong>Overall</strong> risk</td><td>low · medium · high</td><td>Your judgement, combining the two</td></tr>
+    <tr><td><strong>Effect</strong> of a measure</td><td>eliminated · reduced · accepted</td><td>Gone · smaller · still there, and you are saying so</td></tr>
+  </table></div>
+</div>
+
+<div class="cell turn">
+  <span class="tag">DPIA A</span>
+  <h3>A. What and why</h3>
+  <div class="tablewrap"><table class="form" data-key="dpia.a" data-head="" data-cols="Your answer">
+    <tr data-id="why"><td><strong>Why a DPIA is needed:</strong> which of the ICO's high-risk triggers apply to this project</td></tr>
+    <tr data-id="nature"><td><strong>What happens to the data</strong>, in one short paragraph: where it comes from, where it goes, who sees it, how long it is kept. Refer to your week 6 diagram; do not redraw it.</td></tr>
+    <tr data-id="context"><td><strong>Who the people are and what they were told.</strong> What did participants agree to (the week 5 provenance sheet and the study information)? Would they expect this use? Are any of them vulnerable?</td></tr>
+  </table></div>
+</div>
+
+<div class="cell know">
+  <span class="tag">Before you answer</span>
+  <h3 style="margin-top:0">Three permissions, not one</h3>
+  <p>Using health data for research in England needs three separate things to line up. You met them in the lecture; here they are in one place so you can choose, not memorise.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Permission</th><th>What it is</th><th>What a project like this usually relies on</th></tr>
+    <tr><td><strong>Lawful basis</strong> (UK GDPR Article 6)</td><td>The reason the law allows you to use personal data at all</td><td>For a university or NHS research project: <em>public task</em>, Article 6(1)(e). Consent is rarely used as the GDPR basis for research, because it can be withdrawn and must be freely given.</td></tr>
+    <tr><td><strong>Special category condition</strong> (Article 9)</td><td>Health data needs an extra reason on top of Article 6</td><td><em>Research in the public interest</em>, Article 9(2)(j), with the safeguards in the Data Protection Act 2018 (Schedule 1, paragraph 4)</td></tr>
+    <tr><td><strong>Common law duty of confidentiality</strong></td><td>A separate rule: what a patient tells a clinician stays confidential unless there is a route out</td><td>One of three routes: the patient <em>consented</em> to this use; <em>section 251</em> support from the Confidentiality Advisory Group; or the data is <em>anonymised</em> so the duty no longer applies</td></tr>
+  </table></div>
+  <p>The useful question for NORTHSTAR is the third one: look at what the consent form covered (week 5), and at whether the data the researcher sees is anonymised (week 6). Pick the route that is actually true, and say why in one line.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">DPIA B</span>
+  <h3>B. Permission and proportionality</h3>
+  <div class="tablewrap"><table class="form" data-key="dpia.b" data-head="" data-cols="Your answer">
+    <tr data-id="lawful"><td><strong>Lawful basis and special category condition.</strong> Which Article 6 basis and which Article 9 condition, and one line on why they fit</td></tr>
+    <tr data-id="commonlaw"><td><strong>Common law route:</strong> consent, section 251 support, or anonymised? Which one is actually true for this project, and why</td></tr>
+    <tr data-id="another"><td><strong>Could the purpose be achieved with less?</strong> Fewer people, fewer fields, less identifiable data, no linkage, a different setting. Name one thing you are <em>not</em> taking.</td></tr>
+    <tr data-id="rights"><td><strong>How people could find out or object.</strong> Does the national data opt-out apply to any part of this? Who would a participant ask?</td></tr>
+  </table></div>
+</div>
+
+<div class="cell know">
+  <span class="tag">Before you answer</span>
+  <p>Write three risks. For each one, name the <strong>source</strong> (what could go wrong) and the <strong>harm to people</strong> (what it would do to them), rate it, then say what you would do and what is left.
+  <strong>At least one risk must come from your week 7 data quality findings</strong>: a model trained on data that leaves out or misrepresents some patients is a risk to those patients, not just a technical problem.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">DPIA C and D</span>
+  <h3>C. Risks to individuals, and D. What you would do about them</h3>
+  <div class="tablewrap"><table class="form" data-key="dpia.r" data-caption="DPIA risks and measures" data-head="#" data-cols="Source of risk and harm to people|Likelihood:remote,possible,probable|Severity:minimal,significant,severe|Measure to reduce it|Effect:eliminated,reduced,accepted|Residual risk:low,medium,high">
+    <tr data-id="R1"><td>R1</td></tr><tr data-id="R2"><td>R2</td></tr><tr data-id="R3"><td>R3</td></tr>
+  </table></div>
+  <details>
+    <summary>Example entries, from a different project so they cannot be copied</summary>
+    <p><em>Project: using a GP practice's asthma register to predict exacerbations in the next 12 months, analysed inside the practice's own system.</em></p>
+    <table>
+      <tr><th>A · Why needed</th><td>Health data for about 1,900 patients; a predictive model is a new use of data collected for care; profiling that could affect who is offered a review. Three ICO triggers.</td></tr>
+      <tr><th>B · Permission</th><td>Article 6(1)(e) public task; Article 9(2)(h) health care, with the safeguard in DPA 2018 Schedule 1 paragraph 2. Common law: this is direct care by the care team, so implied consent covers it.</td></tr>
+      <tr><th>B · With less?</th><td>Yes, partly. The model does not need free-text consultation notes; coded prescriptions and attendances are enough. Free text is excluded.</td></tr>
+      <tr><th>R1</th><td>Patients coded late or not at all are invisible to the model and will not be prioritised for review. Likelihood <strong>probable</strong>, severity <strong>significant</strong>. Measure: a completeness check that flags patients on two or more inhaler prescriptions with no asthma code for manual review. Effect <strong>reduced</strong>; residual <strong>medium</strong>. <em>(A data quality risk, not a security one.)</em></td></tr>
+      <tr><th>E · Escalate</th><td>Residual medium risk on R1 accepted by the practice's Caldicott Guardian, on condition the completeness check runs before each model refresh.</td></tr>
+    </table>
+  </details>
+</div>
+
+<div class="cell turn">
+  <span class="tag">DPIA E</span>
+  <h3>E. What is left, and who signs it off</h3>
+  <div class="tablewrap"><table class="form" data-key="dpia.e" data-head="" data-cols="Your answer">
+    <tr data-id="escalate"><td><strong>Any residual risk still medium or high</strong>: why it is accepted, and who you would take it to (the Data Protection Officer, the Caldicott Guardian, the data access committee, or the ICO if high risk remains)</td></tr>
+  </table></div>
+  <p class="hint">Source for the structure and scales: ICO, Data protection impact assessments, and the ICO DPIA template. The ICO marks this guidance as under review following the
+  Data (Use and Access) Act 2025; check the current version before relying on it.</p>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="t2">
+<h2 data-short="Task 2 · Access application"><span class="part-no">Task 2</span> · Data access application</h2>
+<p class="timing">Same pairs · about 30 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">Ask for the least that answers the question</h3>
+  <p>This form is a short version of what real committees ask for (NHS England's Data Access Request Service, UK Biobank, CPRD and SAIL all ask broadly the same things).
+  The part they read most carefully is the <strong>field-by-field table</strong>: for every field you want, why the question needs it, and in the least identifiable form that still works.</p>
+  <p>The "minimum form" of a field is the least revealing version that still does the job:</p>
+  <div class="tablewrap"><table>
+    <tr><th>Minimum form</th><th>Means</th><th>Example</th></tr>
+    <tr><td><strong>raw</strong></td><td>As recorded</td><td>Temperature on admission</td></tr>
+    <tr><td><strong>banded</strong></td><td>Put into groups</td><td>Age band instead of date of birth; month instead of date</td></tr>
+    <tr><td><strong>derived</strong></td><td>Replaced by something calculated from it</td><td>Deprivation decile from the postcode; days since onset from two dates</td></tr>
+    <tr><td><strong>linkage only</strong></td><td>Used to join to another dataset, then removed; never analysed</td><td>NHS number, replaced by a study ID before the researcher sees it</td></tr>
+    <tr><td><strong>dropped</strong></td><td>Not requested</td><td>Patient name</td></tr>
+  </table></div>
+  <p>A good application always gives something up. If every field is "raw", the committee will ask why.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Section 1</span>
+  <h3>1. What, why, and for whom</h3>
+  <div class="field"><label for="w8-title">Project title</label><input type="text" id="w8-title" data-save="app.2.title"></div>
+  <div class="field"><label for="w8-lay">Lay summary, about <strong>100 words</strong>, written for a patient panel: what you will do, with whose data, why, and what will come out of it
+    <span class="hint" id="w8-lay-count"></span></label>
+    <textarea id="w8-lay" class="long" data-save="app.2.lay"></textarea></div>
+  <div class="tablewrap"><table class="form" data-key="app.1" data-head="" data-cols="Your answer">
+    <tr data-id="question"><td><strong>The research question</strong>, in one sentence</td></tr>
+    <tr data-id="outputs"><td><strong>What will come out:</strong> tables, figures, a model, code, a paper. Will patients be told what was found?</td></tr>
+    <tr data-id="benefit"><td><strong>Who benefits, and how.</strong> Be specific. "Improving patient care" is not a public benefit statement. "A triage model that flags the admissions at highest risk of death within 48 hours, evaluated at three sites, so that critical care review can be prioritised" is.</td></tr>
+  </table></div>
+  <p class="hint">Permission: the committee reads section B of your DPIA for this. Make sure the application and the DPIA say the same thing.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Section 2</span>
+  <h3>2. Data requested, field by field</h3>
+  <details open>
+    <summary>Three rows done for you</summary>
+    <div class="tablewrap"><table>
+      <tr><th>Field(s)</th><th>Minimum form</th><th>Identifiability</th><th>Why the question needs it, in the committee's words</th></tr>
+      <tr><td><code>nhs_number</code></td><td>linkage only, replaced by study_id at ingress</td><td>direct</td>
+        <td>Needed only to link NORTHSTAR to HES for readmission outcomes (week 7: matching on name and date of birth missed the duplicate pair; the NHS number found it). Never enters the analysis workspace; the key is held by the TRE operator, not the researcher.</td></tr>
+      <tr><td><code>dob</code></td><td>derived: age at admission in 5-year bands</td><td>indirect</td>
+        <td>Age is a predictor of in-hospital death. The full date is not needed; age band gives the same information in a 100-patient cohort and removes a birthday / postcode / sex route to re-identification.</td></tr>
+      <tr><td><code>postcode</code></td><td>derived: deprivation (IMD) decile; postcode itself dropped</td><td>indirect</td>
+        <td>Deprivation is a plausible predictor and a fairness check. Full postcode identifies households; the decile carries the information the model uses.</td></tr>
+    </table></div>
+  </details>
+  <div class="tablewrap"><table class="form" data-key="app.6b" data-caption="Field-level justification" data-head="Field(s)" data-cols="Minimum form:raw,banded,derived,linkage only,dropped|Identifiability:direct,indirect,none|Why the question needs it (or why not)">
+    <tr data-id="names"><td><code>patient_forename</code>, <code>patient_surname</code>, <code>hospital_number</code>, <code>gp_practice_code</code></td></tr>
+    <tr data-id="demog"><td><code>sex</code>, <code>ethnic_category</code></td></tr>
+    <tr data-id="dates"><td><code>adm_date</code>, <code>symptom_onset_date</code>, <code>outcome_date</code></td></tr>
+    <tr data-id="clinical"><td>Admission observations and bloods (<code>temp_adm</code> … <code>ferritin_adm</code>)</td></tr>
+    <tr data-id="freetext"><td>Free text: <code>com_other_txt</code>, <code>meds_on_admission_txt</code>, <code>clinician_comments_txt</code></td></tr>
+    <tr data-id="outcome"><td>Outcome fields (<code>outcome</code>, <code>hosp_los_days</code>, <code>readmit_28d</code>) and the HES fields you want</td></tr>
+  </table></div>
+  <p class="hint" id="w8-dropped"></p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Section 3</span>
+  <h3>3. Safe setting, safe outputs, and the public</h3>
+  <div class="tablewrap"><table class="form" data-key="app.7" data-head="" data-cols="Your answer">
+    <tr data-id="where"><td><strong>Where the analysis happens</strong> (a named TRE or SDE), who has access, and what <em>cannot</em> happen there (no downloads, no internet, no copying out)</td></tr>
+    <tr data-id="leave"><td><strong>What will leave the environment</strong> (tables, model coefficients, the model file, code, figures), what rule stops a patient being identified in them (for example no cell smaller than 5), and who checks before release</td></tr>
+    <tr data-id="ppie"><td><strong>Patients and the public:</strong> who outside the team has been asked about this project, what changed as a result, or, if nobody yet, what you will do and by when</td></tr>
+  </table></div>
+  <div class="field"><label><input type="checkbox" data-save="app.10.dpia" data-label="Declaration: the DPIA describes this project and its risks match the data requested"> I confirm the DPIA describes this project, and its risks match the data requested</label></div>
+  <div class="field"><label><input type="checkbox" data-save="app.10.reid" data-label="Declaration: no attempt will be made to re-identify individuals"> I confirm no attempt will be made to re-identify individuals</label></div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="t3">
+<h2 data-short="Task 3 · The committee"><span class="part-no">Task 3</span> · You are the data access committee</h2>
+<p class="timing">Two pairs together, after the break · about 25 minutes</p>
+
+<div class="cell know">
+  <span class="tag">Key idea</span>
+  <h3 style="margin-top:0">The committee does not judge the science</h3>
+  <p>You have another pair's DPIA and application (swap downloaded files, or swap laptops). Your job is to decide whether <strong>this use of these people's data, by these applicants,
+  in this setting, with these outputs</strong> is justified, and to say so in writing in a way the applicant can act on. Appoint a chair, who breaks ties and signs the letter.</p>
+  <p>Real committees most often say <strong>approve with conditions</strong>. A good condition is something the applicant can actually do, that someone can check, with a date.
+  A reason that could be sent to any application ("the committee has concerns about data minimisation") is noise; a reason that names a field and a section is a decision.</p>
+  <p>Score each criterion from 0 to 3: <strong>0</strong> absent or wrong · <strong>1</strong> stated but not explained · <strong>2</strong> explained with gaps · <strong>3</strong> explained, specific, and consistent with the rest of the application.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Committee A</span>
+  <h3>Part A. Is it complete? (about five minutes)</h3>
+  <div class="field"><label for="w8-whose">Whose application are you assessing?</label><input type="text" id="w8-whose" data-save="dac.whose"></div>
+  <div class="tablewrap"><table class="form" id="dac-a" data-key="dac.a" data-head="Check" data-cols="Yes / No:Yes,No">
+    <tr data-id="lay"><td>Lay summary is present and a patient panel could understand it</td></tr>
+    <tr data-id="permission"><td>A lawful basis, an Article 9 condition and a common law route are all named (in the DPIA, section B)</td></tr>
+    <tr data-id="fields"><td>Every field group has a minimum form and a reason</td></tr>
+    <tr data-id="dropped"><td>At least one field has been dropped, with a reason</td></tr>
+    <tr data-id="setting"><td>A safe setting is named and a rule for outputs is given</td></tr>
+    <tr data-id="dpia"><td>The DPIA refers to the same project, and at least one of its risks is a data quality risk</td></tr>
+  </table></div>
+  <p class="score-total" id="dac-a-total"></p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Committee B</span>
+  <h3>Part B. Is it justified?</h3>
+  <div class="tablewrap"><table class="form" id="dac-b" data-key="dac.b" data-caption="Committee assessment" data-head="Criterion|What a 3 looks like" data-cols="Score:0,1,2,3|Note for the letter">
+    <tr data-id="lawful"><td><strong>1. The permissions make sense</strong></td><td>The lawful basis fits a research project; the common law route matches what participants were actually told and whether the data is really anonymised</td></tr>
+    <tr data-id="minimise"><td><strong>2. Minimisation is argued, not asserted</strong></td><td>Each field's reason refers to the research question; minimum forms are used where they would work; direct identifiers are linkage-only or dropped; something has been given up</td></tr>
+    <tr data-id="match"><td><strong>3. The DPIA matches the application</strong></td><td>Same fields, linkage, setting and outputs; the DPIA's risks include a data quality risk, not only security; residual risks are stated rather than claimed away</td></tr>
+    <tr data-id="benefit"><td><strong>4. Benefit and safeguards are specific</strong></td><td>Names who benefits and how; a named environment with real constraints; output types listed with a disclosure rule and a checker; someone outside the team has been asked</td></tr>
+  </table></div>
+  <div class="kpi" id="dac-score"></div>
+  <p class="hint">A guide, not a formula: 10 to 12 usually approve; 7 to 9 usually approve with conditions; below 7 usually reject.
+  A 0 on permissions or on the DPIA match is a reject whatever the total.</p>
+</div>
+
+<div class="cell turn">
+  <span class="tag">Committee C</span>
+  <h3>Part C. The decision letter</h3>
+  <div class="field"><label for="w8-decision">Decision</label>
+    <select id="w8-decision" data-save="dac.decision"><option value=""></option><option>Approve</option><option>Approve with conditions</option><option>Reject</option></select></div>
+  <div class="field"><label for="w8-chair">Chair, and committee members</label><input type="text" id="w8-chair" data-save="dac.members"></div>
+  <div class="field"><label for="w8-reasons">Reasons: what the committee found persuasive, and what it did not. Refer to specific fields, sections or risks.</label>
+    <textarea id="w8-reasons" class="long" data-save="dac.reasons"></textarea></div>
+  <div class="field"><label for="w8-conditions">Conditions (numbered; each with what, how it will be checked, and by when). For a rejection, say what would change the answer.</label>
+    <textarea id="w8-conditions" data-save="dac.conditions"></textarea></div>
+  <details>
+    <summary>Preview the letter</summary>
+    <div class="output" id="w8-letter"></div>
+  </details>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section class="part" id="p4">
+<h2 data-short="Closing the block"><span class="part-no">Close</span> · The letter you received, and looking back</h2>
+
+<div class="cell turn">
+  <span class="tag">Your response</span>
+  <h3>Responding to your decision letter</h3>
+  <div class="field"><label for="w8-respond">One paragraph: which of the committee's conditions you would accept, which you would argue, and what you would change in your application.</label>
+    <textarea id="w8-respond" data-save="close.respond"></textarea></div>
+  <div class="field"><label for="w8-exit">Look back at your week 5 exit ticket ("the thing I most want to check before I would trust this dataset is…"). Were you right? What would you write now?</label>
+    <textarea id="w8-exit" class="short" data-save="close.exit"></textarea></div>
+</div>
+
+<div class="cell turn">
+  <span class="tag">For your notes</span>
+  <h3>Do your four weeks agree with each other?</h3>
+  <p>The same project ran through all four weeks. These are the places where the parts should line up; tick the ones that do, and note the ones that do not, because the gaps are the interesting bit.</p>
+  <div class="checklist">
+    <label><input type="checkbox" data-save="pf.1" data-optional="1" data-label="Fields flagged risky in week 5 are the fields de-identified in week 6"> The fields you flagged as risky in week 5 are the fields you de-identified in week 6</label>
+    <label><input type="checkbox" data-save="pf.2" data-optional="1" data-label="Week 6 STRIDE risks appear in the DPIA risk table"> Your week 6 STRIDE risks appear in your DPIA risk table, with likelihood and severity</label>
+    <label><input type="checkbox" data-save="pf.3" data-optional="1" data-label="A week 7 quality finding appears as a DPIA risk"> At least one week 7 quality finding (missingness by site, the century bug, the duplicate) appears as a DPIA risk</label>
+    <label><input type="checkbox" data-save="pf.4" data-optional="1" data-label="Minimum forms in the application match what week 6 did"> The minimum forms in your application's field table match what you actually did in week 6 (age band width, postcode level)</label>
+  </div>
+  <div class="field"><label for="w8-reflect">Notes to yourself: what you found across the four weeks, what you would fix, what you would refuse, and what you would need from someone else (optional)</label>
+    <textarea id="w8-reflect" class="long" data-save="close.reflect" data-optional="1"></textarea></div>
+</div>
+</section>
+
+<section id="finish">
+  <h2>Download your work</h2>
+  <p>Download before the break so you can give your application to another pair, and again at the end. To pull together all four weeks of notes,
+  use the backup file on the home page, or download each week's page.</p>
+</section>
+
+</main>
+</div>
+<footer class="site">DASC513 · Week 8 · NORTHSTAR is synthetic teaching data. Nothing you type is sent anywhere.</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/northstar.js"></script>
+<script src="assets/render.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/week8.js"></script>
+</body>
+</html>

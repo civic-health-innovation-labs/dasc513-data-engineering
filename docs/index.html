@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NORTHSTAR Practicals</title>
+<meta name="description" content="DASC513 Data Engineering practicals: work through the NORTHSTAR study dataset week by week. Answers save in your browser and download as notes.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d5c63'/%3E%3Cpath d='M16 5l2.6 7.9H27l-6.8 4.9 2.6 8L16 21l-6.8 4.8 2.6-8L5 12.9h8.4z' fill='%23fff'/%3E%3C/svg%3E">
+</head>
+<body data-week="home">
+<div class="layout" style="grid-template-columns:1fr">
+<main id="main" style="max-width:900px">
+
+<div class="hero">
+  <div class="kicker">DASC513 · Data Engineering block · Weeks 5 to 8</div>
+  <h1>The NORTHSTAR practicals</h1>
+  <p class="lede">One messy clinical study dataset, four weeks, one question: what has to be true
+  before this data is safe and useful for building an AI model?</p>
+</div>
+
+<div class="cards" id="weeks">
+  <a class="card" href="week5.html" data-wk="5"><div class="wk">Week 5</div><h3>First contact</h3>
+    <p>Look before you touch. What the dataset is for, where it came from, FAIR in four questions, and mapping three fields to a standard.</p>
+    <div class="pbar"><div></div></div><div class="pct"></div></a>
+  <a class="card" href="week6.html" data-wk="6"><div class="wk">Week 6</div><h3>Can the data be shared?</h3>
+    <p>Where the data goes and what could go wrong, then de-identify the real columns and see what that costs.</p>
+    <div class="pbar"><div></div></div><div class="pct"></div></a>
+  <a class="card" href="week7.html" data-wk="7"><div class="wk">Week 7</div><h3>Data quality</h3>
+    <p>Missing values, three date formats, impossible values, a duplicate, and writing down what you did.</p>
+    <div class="pbar"><div></div></div><div class="pct"></div></a>
+  <a class="card" href="week8.html" data-wk="8"><div class="wk">Week 8</div><h3>Governance in practice</h3>
+    <p>A mini DPIA, a data access application, and sitting on the committee that decides.</p>
+    <div class="pbar"><div></div></div><div class="pct"></div></a>
+</div>
+
+<h2>How these pages work</h2>
+<p>Each week's page follows the session from start to finish. The timings on each page are a guide to a two-hour session, not a clock. You do not need to install anything or write
+any code to complete it, and you can work through it with the person next to you. There are four kinds of box:</p>
+<div class="cell read"><span class="tag">Read</span><p>Explanation. Read it, then move on.</p></div>
+<div class="cell know"><span class="tag">Key idea</span><p>The one thing you need to understand before the next question. If a question seems to come out of nowhere, the answer is in the key idea box just above it.</p></div>
+<div class="cell run"><span class="tag">Run</span><p>Code that has already been written, shown in <strong>R</strong> and in <strong>Python</strong>.
+You do not need to understand every symbol: read the plain-English line under the code, then press <strong>Run</strong> to see what it produces on the real data.</p></div>
+<div class="cell turn"><span class="tag">Your turn</span><p>A question for you. Type your answer into the box. Nothing you type is marked or submitted: these pages are your own knowledge base for the block, and the ideas in them are what the assessment draws on.</p></div>
+
+<p>Boxes marked <strong>Going further</strong> are optional extras for anyone who finishes early or wants to see more.</p>
+<div class="notice important">
+  <h3>Your work is saved in this browser, not online</h3>
+  <p>Everything you type is saved as you go, on the computer you are using. Close the tab and come back
+  on the same computer and browser, and it will still be there. It does <strong>not</strong> follow you to another
+  computer, and <strong>university PCs may wipe it when you log out.</strong></p>
+  <p>So at the end of every session, use <strong>Download my work</strong> at the bottom of the page.
+  That gives you a Word file of your notes. A backup file lets you carry on on another computer.</p>
+</div>
+
+<h2>The data</h2>
+<p>NORTHSTAR is a <strong>synthetic</strong> dataset: it was made up for teaching, and no real patient is in it.
+It looks like an export from REDCap (a common research data system) for a study run across three
+hospitals. You will find out more about it as the weeks go on, and working out what you have <em>not</em>
+been told is part of week 5. It is deliberately imperfect. Finding the problems is the point.</p>
+<div class="btnrow">
+  <a class="btn" href="data/NORTHSTAR_redcap_export.csv" download>Download the dataset (CSV)</a>
+  <a class="btn" href="data/NORTHSTAR_data_dictionary.csv" download>Download the data dictionary (CSV)</a>
+</div>
+
+<h2>Want to run the code yourself?</h2>
+<p>Every code example on these pages works. Press <strong>Copy</strong> on any code box and paste it into
+<strong>RStudio</strong> or <strong>Google Colab</strong>. The data loads straight from the course GitHub repository.
+If you feel confident, the original Colab notebooks (in Python) cover the same material and are a good
+place to experiment in your own time:</p>
+<ul>
+  <li><a href="https://colab.research.google.com/github/civic-health-innovation-labs/dasc513-data-engineering/blob/main/NORTHSTAR_week5_first_contact_STUDENT.ipynb">Week 5 notebook in Colab</a></li>
+  <li><a href="https://colab.research.google.com/github/civic-health-innovation-labs/dasc513-data-engineering/blob/main/NORTHSTAR_week6_anonymisation_STUDENT.ipynb">Week 6 notebook in Colab</a></li>
+  <li><a href="https://colab.research.google.com/github/civic-health-innovation-labs/dasc513-data-engineering/blob/main/NORTHSTAR_week7_data_quality_STUDENT.ipynb">Week 7 notebook in Colab</a></li>
+</ul>
+
+<h2>Backups</h2>
+<p>One file containing everything you have typed in all four weeks. Use it to move to another computer,
+or to get your work back if your browser has been cleared.</p>
+<div class="btnrow">
+  <button type="button" id="backup">Download backup file</button>
+  <label class="btn" for="restore">Restore from a backup file…</label>
+  <input type="file" id="restore" accept=".json,application/json" hidden>
+</div>
+
+</main>
+</div>
+<footer class="site">DASC513 Practical and Responsible AI for Health Innovation · University of Liverpool ·
+NORTHSTAR is synthetic teaching data. Nothing you type on these pages is sent anywhere.</footer>
+
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  var meta = DASC.readJSON("dasc513.meta", {});
+  document.querySelectorAll(".card[data-wk]").forEach(function (c) {
+    var w = c.dataset.wk, s = DASC.readJSON("dasc513.week" + w, {});
+    var p = meta["progress" + w] || 0;
+    c.querySelector(".pbar div").style.width = p + "%";
+    c.querySelector(".pct").textContent = s._updated ? p + "% answered" : "Not started";
+  });
+  document.getElementById("backup").addEventListener("click", function () {
+    DASC.download("DASC513_backup_" + new Date().toISOString().slice(0, 10) + ".json", JSON.stringify(DASC.allData(), null, 1), "application/json");
+  });
+  document.getElementById("restore").addEventListener("change", function (e) { if (e.target.files[0]) DASC.restore(e.target.files[0]); });
+})();
+</script>
+</body>
+</html>
